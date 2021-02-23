@@ -23,11 +23,15 @@ class UserServiceImpl(
         return super.createFromDto(dto)
     }
 
+    override fun findByUsername(username: String): User? {
+        return userRepository.findByUsername(username)
+    }
+
     override fun fromDto(dto: UserDto): User {
         return converter.toModel(dto)
     }
 
-    override fun findByUsername(username: String): User? {
-        return userRepository.findByUsername(username)
+    override fun toDto(entity: User): UserDto {
+        return converter.toDto(entity)
     }
 }

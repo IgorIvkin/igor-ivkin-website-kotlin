@@ -62,13 +62,10 @@ abstract class BaseServiceImpl<EntityT, IdT, DtoT> constructor(
         return repository.count()
     }
 
-    override fun convertToDto(entity: EntityT): DtoT {
-        TODO("Not yet implemented")
-    }
-
-    override fun convertToDto(listOfEntities: List<EntityT>?): List<DtoT>? {
-        TODO("Not yet implemented")
-    }
-
     abstract fun fromDto(dto: DtoT): EntityT
+    abstract fun toDto(entity: EntityT): DtoT
+
+    fun toListOfDto(entityList: List<EntityT>): List<DtoT> {
+        return entityList.map { entity -> this.toDto(entity) }.toList()
+    }
 }

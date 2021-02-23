@@ -13,8 +13,4 @@ interface BaseService<EntityT, IdT, DtoT> {
     fun deleteById(id: IdT)
     fun deleteAll()
     fun count(): Long
-
-    // DTO specific methods
-    fun convertToDto(entity: EntityT): DtoT
-    fun convertToDto(listOfEntities: List<EntityT>?): List<DtoT>?
 }
