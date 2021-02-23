@@ -16,11 +16,11 @@ data class User(
 
     @NotNull
     @Length(min = 1, max = 255)
-    var username: String,
+    var username: String?,
 
     @NotNull
     @JsonIgnore
-    var password: String,
+    var password: String?,
 
     @NotNull
     @Length(min = 1, max = 255)
@@ -35,7 +35,7 @@ data class User(
     @UpdateTimestamp
     var updatedAt: Instant?,
 
-    var enabled: Boolean = true,
+    var enabled: Boolean? = true,
 
     @Enumerated(EnumType.ORDINAL)
     var role: UserRole?
