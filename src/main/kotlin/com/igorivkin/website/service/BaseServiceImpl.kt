@@ -7,7 +7,7 @@ abstract class BaseServiceImpl<EntityT, IdT, DtoT> constructor(
     private val repository: JpaRepository<EntityT, IdT>,
     private val entityTypeClass: Class<EntityT>?,
     private val dtoTypeClass: Class<DtoT>?,
-    ) : BaseService<EntityT, IdT, DtoT> {
+): BaseService<EntityT, IdT, DtoT> {
 
     override fun findAll(): List<EntityT>? {
         return repository.findAll()

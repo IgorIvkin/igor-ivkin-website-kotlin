@@ -12,7 +12,16 @@ import org.springframework.stereotype.Service
 class UserServiceImpl(
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder
-): BaseServiceImpl<User, Long, UserDto>(userRepository, User::class.java, UserDto::class.java), UserService {
+):
+    // extends
+    BaseServiceImpl<User, Long, UserDto>(
+        userRepository,
+        User::class.java,
+        UserDto::class.java
+    ),
+
+    // implements
+    UserService {
 
     private val converter: UserConverter = Mappers.getMapper(UserConverter::class.java)
 

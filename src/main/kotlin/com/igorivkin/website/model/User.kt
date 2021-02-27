@@ -9,10 +9,9 @@ import javax.persistence.*
 import javax.validation.constraints.NotNull
 
 @Entity(name = "users")
-data class User(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long?,
+open class User(
+
+    // id field taken from BaseModel-entity here
 
     @NotNull
     @Length(min = 1, max = 255)
@@ -39,4 +38,4 @@ data class User(
 
     @Enumerated(EnumType.ORDINAL)
     var role: UserRole?
-)
+): BaseModel<Long>()
