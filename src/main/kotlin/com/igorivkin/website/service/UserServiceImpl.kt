@@ -26,7 +26,7 @@ class UserServiceImpl(
     private val converter: UserConverter = Mappers.getMapper(UserConverter::class.java)
 
     override fun createFromDto(dto: UserDto): User {
-        if (dto.password!!.isNotBlank()) {
+        if (dto.password.isNotBlank()) {
             dto.password = passwordEncoder.encode(dto.password)
         }
         return super.createFromDto(dto)

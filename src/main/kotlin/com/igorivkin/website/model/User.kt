@@ -15,15 +15,15 @@ open class User(
 
     @NotNull
     @Length(min = 1, max = 255)
-    var username: String?,
+    var username: String,
 
     @NotNull
     @JsonIgnore
-    var password: String?,
+    var password: String,
 
     @NotNull
     @Length(min = 1, max = 255)
-    var title: String?,
+    var title: String,
 
     var email: String?,
     var idOauth: String?,
@@ -37,5 +37,5 @@ open class User(
     var enabled: Boolean? = true,
 
     @Enumerated(EnumType.ORDINAL)
-    var role: UserRole?
+    var role: UserRole
 ): BaseModel<Long>()
