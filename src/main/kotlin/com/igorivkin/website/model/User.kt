@@ -9,7 +9,7 @@ import javax.persistence.*
 import javax.validation.constraints.NotNull
 
 @Entity(name = "users")
-open class User(
+class User(
 
     // id field taken from BaseModel-entity here
 
@@ -37,5 +37,9 @@ open class User(
     var enabled: Boolean? = true,
 
     @Enumerated(EnumType.ORDINAL)
-    var role: UserRole
+    var role: UserRole,
+
+    @OneToMany(mappedBy = "author", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    var articles: List<Article>?
+
 ): BaseModel<Long>()
