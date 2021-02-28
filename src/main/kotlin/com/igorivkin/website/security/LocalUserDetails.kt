@@ -20,11 +20,11 @@ class LocalUserDetails(): UserDetails {
     }
 
     override fun getPassword(): String {
-        return user.password!!
+        return user.password
     }
 
     override fun getUsername(): String {
-        return user.username!!
+        return user.username
     }
 
     override fun isAccountNonExpired(): Boolean {

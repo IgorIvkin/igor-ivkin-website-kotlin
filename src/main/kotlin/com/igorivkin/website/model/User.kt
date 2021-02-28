@@ -25,14 +25,14 @@ class User(
     @Length(min = 1, max = 255)
     var title: String,
 
-    var email: String?,
-    var idOauth: String?,
+    var email: String? = null,
+    var idOauth: String? = null,
 
     @CreationTimestamp
-    var createdAt: Instant?,
+    var createdAt: Instant? = null,
 
     @UpdateTimestamp
-    var updatedAt: Instant?,
+    var updatedAt: Instant? = null,
 
     var enabled: Boolean? = true,
 
@@ -40,6 +40,6 @@ class User(
     var role: UserRole,
 
     @OneToMany(mappedBy = "author", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    var articles: List<Article>?
+    var articles: List<Article>? = mutableListOf<Article>()
 
 ): BaseModel<Long>()

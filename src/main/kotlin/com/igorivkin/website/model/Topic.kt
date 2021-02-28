@@ -14,6 +14,6 @@ class Topic(
     var title: String,
 
     @ManyToMany(mappedBy = "topics", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    var articles: List<Article>?
+    var articles: List<Article>? = mutableListOf<Article>()
 
 ): BaseModel<Long>()

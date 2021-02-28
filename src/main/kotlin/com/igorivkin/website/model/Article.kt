@@ -35,6 +35,6 @@ class Article(
         joinColumns = [JoinColumn(name = "id_article", referencedColumnName = "id")],
         inverseJoinColumns = [JoinColumn(name = "id_topic", referencedColumnName = "id")]
     )
-    var topics: List<Topic>?
+    var topics: List<Topic>? = mutableListOf<Topic>()
 
 ): BaseModel<Long>()
