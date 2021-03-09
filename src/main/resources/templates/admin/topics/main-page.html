@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<body>
+<div th:fragment="content">
+    <h1>Темы статей</h1>
+
+    <div class="navigation">
+        <a th:href="@{/admin/topics/add/}" class="button button-add">Добавить тему</a>
+    </div>
+
+    <table class="basic-table">
+        <tr class="basic-table-head">
+            <td width="10%">ID</td>
+            <td>Название</td>
+            <td width="10%">Действия</td>
+        </tr>
+        <th:block th:each="topic : ${topics}">
+            <tr th:attr="data-id-topic=${topic.id}">
+                <td th:text="${topic.id}"></td>
+                <td th:text="${topic.title}"></td>
+                <td><a class="action-link" href="#" th:href="@{/admin/topics/edit/{placeId}/(placeId=${topic.id})}"><i class="bi bi-list"></i></a></td>
+            </tr>
+        </th:block>
+    </table>
+</div>
+</body>
+</html>

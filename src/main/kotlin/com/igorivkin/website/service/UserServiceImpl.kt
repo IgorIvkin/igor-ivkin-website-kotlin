@@ -21,7 +21,8 @@ class UserServiceImpl(
     ),
 
     // implements
-    UserService {
+    UserService
+{
 
     private val converter: UserConverter = Mappers.getMapper(UserConverter::class.java)
 

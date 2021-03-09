@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<body>
+<div th:fragment="content">
+    <h1>Добавить статью</h1>
+
+    <div class="breadcrumbs">
+        <div class="item"><a href="/admin/topics/">Темы для статей</a></div>
+        <div class="divider">/</div>
+        <div class="item">Изменить тему</div>
+    </div>
+
+    <div th:if="${#strings.equals(updateStatus, 'success')}" class="success-status">
+        <b>Всё получилось!</b> Тема успешно обновлена.
+    </div>
+
+    <form class="basic-form" id="topic-edit-form" method="post" th:action="@{/admin/topics/do-edit/}">
+        <input type="hidden" name="id" th:attr="value=${topic.id}">
+        <div class="section">
+            <label for="title">Название темы</label><br />
+            <input type="text" id="title" name="title" required="required" maxlength="255" th:attr="value=${topic.title}">
+        </div>
+
+        <div class="section">
+            <button class="button button-add">Сохранить</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
