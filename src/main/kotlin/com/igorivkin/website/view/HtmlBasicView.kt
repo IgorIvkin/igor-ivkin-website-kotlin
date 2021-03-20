@@ -40,6 +40,11 @@ open class HtmlBasicView(
         return this
     }
 
+    override fun addJs(jsFileName: String): HtmlView {
+        js.add(jsFileName)
+        return this
+    }
+
     /**
      * Initializes a current model in this view by the parameter with a given value and name.
      * @param parameterName String presentation of name of the parameter.

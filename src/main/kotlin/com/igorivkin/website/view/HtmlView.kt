@@ -8,4 +8,5 @@ interface HtmlView {
     fun setHeader(headerTemplateName: String): HtmlView
     fun setFooter(footerTemplateName: String): HtmlView
     fun setContent(contentTemplateName: String): HtmlView
+    fun addJs(jsFileName: String): HtmlView
 }

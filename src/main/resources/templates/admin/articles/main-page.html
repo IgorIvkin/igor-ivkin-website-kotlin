@@ -8,6 +8,19 @@
         <a th:href="@{/admin/articles/add/}" class="button button-add">Добавить новую статью</a>
     </div>
 
+    <table class="basic-table">
+        <tr class="basic-table-head">
+            <td>Название</td>
+            <td width="10%">Действия</td>
+        </tr>
+        <th:block th:each="article : ${articles}">
+            <tr th:attr="data-id-article=${article.id}">
+                <td th:text="${article.title}"></td>
+                <td><a class="action-link" href="#" th:href="@{/admin/articles/edit/{articleId}/(articleId=${article.id})}"><i class="bi bi-list"></i></a></td>
+            </tr>
+        </th:block>
+    </table>
+
 </div>
 </body>
 </html>

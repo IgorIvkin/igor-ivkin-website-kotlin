@@ -1,6 +1,8 @@
 package com.igorivkin.website.service
 
 import com.igorivkin.website.exception.EntityDoesNotExistException
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import java.util.function.BiFunction
 import org.springframework.data.jpa.repository.JpaRepository
 
@@ -10,9 +12,6 @@ abstract class BaseServiceImpl<EntityT, IdT, DtoT> constructor(
     private val dtoTypeClass: Class<DtoT>?,
 ): BaseService<EntityT, IdT, DtoT> {
 
-    override fun findAll(): List<EntityT>? {
-        return repository.findAll()
-    }
 
     override fun create(entity: EntityT): EntityT {
         if(entity == null) {
@@ -42,6 +41,14 @@ abstract class BaseServiceImpl<EntityT, IdT, DtoT> constructor(
         } else {
             throw IllegalArgumentException("Cannot update the entity of class $entityTypeClass by id $id, entity is null")
         }
+    }
+
+    override fun findAll(): List<EntityT> {
+        return repository.findAll()
+    }
+
+    override fun findAll(pageable: Pageable): Page<EntityT> {
+        return repository.findAll(pageable)
     }
 
     override fun findById(id: IdT): EntityT {

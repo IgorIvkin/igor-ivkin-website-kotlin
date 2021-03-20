@@ -1,12 +1,15 @@
 package com.igorivkin.website.service
 
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import java.util.function.BiFunction
 
 interface BaseService<EntityT, IdT, DtoT> {
     fun create(entity: EntityT): EntityT
     fun createFromDto(dto: DtoT): EntityT
 
-    fun findAll(): List<EntityT>?
+    fun findAll(): List<EntityT>
+    fun findAll(pageable: Pageable): Page<EntityT>
     fun findById(id: IdT): EntityT
     fun count(): Long
 

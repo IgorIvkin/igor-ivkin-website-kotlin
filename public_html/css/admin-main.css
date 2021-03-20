@@ -75,13 +75,14 @@ a.action-link:hover {
 .header-container {
     position:   sticky;
     top:        0;
+    z-index:    2;
 }
 
 header {
     display:            flex;
     flex-direction:     row;
     justify-content:    space-between;
-    background-color:   #454545;
+    background-color:   rgba(69, 69, 69, 1) !important;
     color:              #f5f5f5;
     font-size:          15px;
     box-shadow:         0 .5rem 1rem rgba(0,0,0,.15)!important;
@@ -228,7 +229,11 @@ header .welcome {
     margin:             20px 0 20px 0;
 }
 
-.container .content .basic-form .section .item {
+.container .content .basic-form .section-relative {
+    position: relative;
+}
+
+.container .content .basic-form .section .button-item {
     display: inline-block;
     margin: 0 5px 0 0;
 }
@@ -275,6 +280,48 @@ header .welcome {
     border:             1px solid #70af85;
     padding:            10px 20px;
     font-size:          14px;
+}
+
+.container .content .autocomplete {
+    background-color:   #ffffff;
+    box-shadow:         0 .5rem 1rem rgba(0,0,0,.15)!important;
+    position:           absolute;
+    width:              20%;
+    left:               5px;
+}
+
+.container .content .autocomplete .item {
+    border-bottom:      1px solid #dcdcdc;
+    display:            block !important;
+    margin:             0 !important;
+    font-size:          14px;
+}
+
+.container .content .autocomplete .item a:link {padding: 10px 15px;display: block;color: #404040;text-decoration: none;}
+.container .content .autocomplete .item a:visited {display: block;color: #404040;text-decoration: none;}
+.container .content .autocomplete .item a:hover {display: block;color: #404040;background-color:#f5f5f5;text-decoration: none;}
+
+.container .content .set-topics {
+    margin:         10px 0 10px 0;
+    display:        flex;
+    flex-direction: row;
+}
+
+.container .content .set-topics .item {
+    background-color:   #d7f7ff;
+    border:             1px solid #b2edef;
+    margin:             0 10px 0 0;
+    padding:            5px;
+    font-size:          14px;
+}
+
+.container .content .set-topics .item .set-topic-delete {
+    margin: 0 0 0 5px;
+    cursor: pointer;
+}
+
+.container .content .set-topics .item .set-topic-delete:hover {
+    color: #909090;
 }
 
 @media screen and (max-width: 790px) {
