@@ -4,4 +4,5 @@ import com.igorivkin.website.dto.TopicDto
 import com.igorivkin.website.model.Topic
 
 interface TopicService : BaseService<Topic, Long, TopicDto> {
+    fun findByTitle(title: String): List<Topic>
 }

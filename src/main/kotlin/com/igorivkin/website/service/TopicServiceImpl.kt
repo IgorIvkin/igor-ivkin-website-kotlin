@@ -31,4 +31,8 @@ class TopicServiceImpl(
     override fun toDto(entity: Topic): TopicDto {
         return converter.toDto(entity)
     }
+
+    override fun findByTitle(title: String): List<Topic> {
+        return topicRepository.findByTitleStartingWithIgnoreCase(title)
+    }
 }

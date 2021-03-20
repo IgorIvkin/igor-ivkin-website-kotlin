@@ -16,4 +16,6 @@ interface BaseService<EntityT, IdT, DtoT> {
     fun delete(entity: EntityT)
     fun deleteById(id: IdT)
     fun deleteAll()
+
+    fun toListOfDto(entityList: List<EntityT>): List<DtoT>
 }

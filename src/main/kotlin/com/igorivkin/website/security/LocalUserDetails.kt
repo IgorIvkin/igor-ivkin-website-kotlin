@@ -40,7 +40,7 @@ class LocalUserDetails(): UserDetails {
     }
 
     override fun isEnabled(): Boolean {
-        return user.enabled!!
+        return user.enabled
     }
 
     fun getUserDetails(): User {

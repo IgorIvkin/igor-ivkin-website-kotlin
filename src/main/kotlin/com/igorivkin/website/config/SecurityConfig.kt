@@ -20,7 +20,7 @@ import java.lang.Exception
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 class SecurityConfig: WebSecurityConfigurerAdapter() {
 
-    val REMEMBER_ME_KEY = "rememberToken"
+    private val REMEMBER_ME_KEY = "rememberToken"
 
     @Bean
     fun passwordEncoder(): BCryptPasswordEncoder? {
@@ -56,7 +56,7 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
             .logout().deleteCookies("JSESSIONID", "remember-me").logoutUrl("/account/doLogout")
             .logoutSuccessUrl("/account/logout").permitAll()
             .and()
-            .rememberMe().key(this.REMEMBER_ME_KEY).userDetailsService(getUserDetailsService())
+            .rememberMe().key(REMEMBER_ME_KEY).userDetailsService(getUserDetailsService())
             .and()
             .csrf().disable()
     }

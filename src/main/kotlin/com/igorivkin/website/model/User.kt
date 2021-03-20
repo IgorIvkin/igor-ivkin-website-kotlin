@@ -34,7 +34,7 @@ class User(
     @UpdateTimestamp
     var updatedAt: Instant? = null,
 
-    var enabled: Boolean? = true,
+    var enabled: Boolean = true,
 
     @Enumerated(EnumType.ORDINAL)
     var role: UserRole,

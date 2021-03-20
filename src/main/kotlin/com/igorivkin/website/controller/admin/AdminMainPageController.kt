@@ -15,7 +15,7 @@ class AdminMainPageController {
             .setTitle("Администраторский интерфейс - Главная страница")
             .setMainTemplate("admin/main-template")
             .setContent("admin/main-page :: content")
-            .render();
+            .render()
     }
 
 }

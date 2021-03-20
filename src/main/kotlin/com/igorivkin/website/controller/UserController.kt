@@ -3,7 +3,6 @@ package com.igorivkin.website.controller
 import com.igorivkin.website.converter.UserConverter
 import com.igorivkin.website.model.User
 import com.igorivkin.website.security.LocalUserDetails
-import com.igorivkin.website.service.UserService
 import org.mapstruct.factory.Mappers
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder

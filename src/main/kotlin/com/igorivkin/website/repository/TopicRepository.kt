@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface TopicRepository: JpaRepository<Topic, Long> {
+    fun findByTitleStartingWithIgnoreCase(title: String): List<Topic>
 }

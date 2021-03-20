@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<body>
+<div th:fragment="content">
+    <h1>Добавить статью</h1>
+
+    <div class="breadcrumbs">
+        <div class="item"><a href="/admin/articles/">Статьи</a></div>
+        <div class="divider">/</div>
+        <div class="item">Добавить статью</div>
+    </div>
+
+    <form class="basic-form" id="topic-edit-form" method="post" th:action="@{/admin/articles/do-add/}">
+        <input type="hidden" name="author.id" th:value="${#authentication.getPrincipal().getUserDetails().id}">
+        <div class="section">
+            <label for="title">Название статьи</label><br />
+            <input type="text" id="title" name="title" required="required" maxlength="255" autocomplete="off">
+        </div>
+
+        <div class="section">
+            <label for="content">Содержание</label><br />
+            <textarea id="content" name="content" required="required"></textarea>
+        </div>
+
+        <div class="section">
+            <label for="topics">Темы (обязательно выбрать хотя бы одну)</label><br />
+            <input type="text" id="topics" name="topics" required="required">
+        </div>
+
+        <div class="section">
+            <span class="item">
+                <button class="button button-add">Добавить</button>
+            </span>
+            <span class="item">
+                <input type="button" class="button button-info" value="Предпросмотр">
+            </span>
+        </div>
+    </form>
+</div>
+</body>
+</html>
