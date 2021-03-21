@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<body>
+<div th:fragment="javascript-data">
+    <script th:inline="javascript">
+        window.setTopics = /*[[${article.topics}]]*/ {};
+    </script>
+</div>
+<div th:fragment="content">
+    <h1 th:text="${article.title}"></h1>
+
+    <div class="breadcrumbs">
+        <div class="item"><a href="/admin/articles/">Статьи</a></div>
+        <div class="divider">/</div>
+        <div class="item">Изменить статью</div>
+    </div>
+
+    <form class="basic-form" id="article-edit-form" method="post" th:action="@{/admin/articles/do-edit/}">
+        <input type="hidden" id="id" name="id" th:value="${article.id}">
+        <input type="hidden" id="author.id" name="author.id" th:value="${article.author.id}">
+        <div class="section">
+            <label for="title">Название статьи</label><br />
+            <input type="text" id="title" name="title" required="required" maxlength="255" autocomplete="off" th:value="${article.title}">
+        </div>
+
+        <div class="section">
+            <label for="content">Содержание</label><br />
+            <textarea id="content" name="content" required="required" th:text="${article.content}"></textarea>
+        </div>
+
+        <div class="section section-relative" id="topic-initialization-block">
+            <label for="topics">Темы (обязательно выбрать хотя бы одну)</label><br />
+            <input type="text" id="topics" name="topics" required="required">
+        </div>
+
+        <div class="section">
+            <span class="button-item">
+                <button class="button button-add">Изменить</button>
+            </span>
+            <span class="button-item">
+                <input type="button" class="button button-info" value="Предпросмотр">
+            </span>
+        </div>
+    </form>
+</div>
+</body>
+</html>

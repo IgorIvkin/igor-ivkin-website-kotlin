@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import java.util.function.BiFunction
 import org.springframework.data.jpa.repository.JpaRepository
+import javax.transaction.Transactional
 
 abstract class BaseServiceImpl<EntityT, IdT, DtoT> constructor(
     private val repository: JpaRepository<EntityT, IdT>,
@@ -21,7 +22,7 @@ abstract class BaseServiceImpl<EntityT, IdT, DtoT> constructor(
     }
 
     override fun createFromDto(dto: DtoT): EntityT {
-        val entityToSave: EntityT = fromDto(dto)
+        val entityToSave: EntityT = toModel(dto)
         return create(entityToSave)
     }
 
@@ -29,12 +30,12 @@ abstract class BaseServiceImpl<EntityT, IdT, DtoT> constructor(
         return updateFromDto(id, dto, null)
     }
 
+    @Transactional
     override fun updateFromDto(id: IdT, dto: DtoT, mappingCallback: BiFunction<EntityT, DtoT, EntityT>?): EntityT {
-        var entityToUpdate: EntityT = findById(id)
-        entityToUpdate = if(mappingCallback == null) {
-            fromDto(dto)
-        } else {
-            mappingCallback.apply(entityToUpdate, dto)
+        var entityToUpdate: EntityT = loadForUpdateById(id)
+        entityToUpdate = fromDto(dto, entityToUpdate)
+        if(mappingCallback != null) {
+            entityToUpdate = mappingCallback.apply(entityToUpdate, dto)
         }
         if(entityToUpdate != null) {
             return repository.save(entityToUpdate)
@@ -56,6 +57,10 @@ abstract class BaseServiceImpl<EntityT, IdT, DtoT> constructor(
             throw IllegalArgumentException("Cannot get entity of type $entityTypeClass by ID, provided ID is null")
         }
         return repository.findById(id).orElseThrow { EntityDoesNotExistException("Cannot find entity of type $entityTypeClass by ID - $id") }
+    }
+
+    override fun loadForUpdateById(id: IdT): EntityT {
+        return findById(id)
     }
 
     override fun delete(entity: EntityT) {
@@ -80,8 +85,9 @@ abstract class BaseServiceImpl<EntityT, IdT, DtoT> constructor(
         return repository.count()
     }
 
-    abstract fun fromDto(dto: DtoT): EntityT
-    abstract fun toDto(entity: EntityT): DtoT
+    override fun fromDto(dto: DtoT, entity: EntityT): EntityT {
+        return this.toModel(dto)
+    }
 
     override fun toListOfDto(entityList: List<EntityT>): List<DtoT> {
         return entityList.map { 

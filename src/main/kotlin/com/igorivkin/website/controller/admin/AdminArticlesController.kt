@@ -4,7 +4,7 @@ import com.igorivkin.website.dto.ArticleDto
 import com.igorivkin.website.model.Article
 import com.igorivkin.website.response.BasicResponse
 import com.igorivkin.website.response.StatusCode
-import com.igorivkin.website.response.SuccessfullyCreatedResponse
+import com.igorivkin.website.response.SuccessfullyModifiedResponse
 import com.igorivkin.website.service.ArticleService
 import com.igorivkin.website.view.HtmlBasicView
 import com.igorivkin.website.view.HtmlView
@@ -18,7 +18,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
-import kotlin.streams.toList
+import java.lang.IllegalArgumentException
 
 @Controller
 class AdminArticlesController(
@@ -33,10 +33,8 @@ class AdminArticlesController(
         model: Model,
         @PathVariable(required = false) pageNumber: Int?
     ): String {
-        val page: Page<Article> = articleService.findAll(
-            pageable = producePageableFromPageNumber(pageNumber),
-            withTopics = true
-        )
+        val page: Page<Article> =
+            articleService.findAll(pageable = producePageableFromPageNumber(pageNumber), withTopics = true)
         model.addAttribute("articles", articleService.toListOfDtoWithTopics(page.toList()))
         model.addAttribute("pageCount", page.totalPages)
         val view = HtmlBasicView(model)
@@ -59,19 +57,41 @@ class AdminArticlesController(
         );
     }
 
+    @GetMapping("/admin/articles/edit/{articleId}")
+    fun renderEditPage(
+        model: Model,
+        @PathVariable articleId: Long
+    ): String {
+        model.addAttribute(
+            "article",
+            articleService.toDtoWithTopics(articleService.findById(id = articleId, withTopics = true))
+        )
+        val view = HtmlBasicView(model)
+        return renderAdminArticlePage(
+            view
+                .setTitle("Администраторский интерфейс - Статьи")
+                .setMainTemplate("admin/main-template")
+                .setJavascriptData("admin/articles/edit-page :: javascript-data")
+                .setContent("admin/articles/edit-page :: content")
+        );
+    }
+
     @RequestMapping(
         value = ["/admin/articles/do-add/"],
         method = [RequestMethod.POST],
         consumes = [MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
-    fun processDoAddArticle(model: Model, @RequestBody articleDto: ArticleDto): ResponseEntity<BasicResponse> {
+    fun processDoAddArticle(
+        model: Model,
+        @RequestBody articleDto: ArticleDto
+    ): ResponseEntity<BasicResponse> {
         log.info("Received new article: {}", articleDto)
         val createdArticle: Article = articleService.createFromDto(articleDto)
         log.info("Created new article: {}", createdArticle)
         return if (createdArticle.id != null) {
             ResponseEntity.ok(
-                SuccessfullyCreatedResponse(
+                SuccessfullyModifiedResponse(
                     createdArticle.id!!,
                     StatusCode.ENTITY_SUCCESSFULLY_CREATED
                 )
@@ -82,10 +102,35 @@ class AdminArticlesController(
         }
     }
 
+    @RequestMapping(
+        value = ["/admin/articles/do-edit/"],
+        method = [RequestMethod.POST],
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    fun processDoEditArticle(
+        model: Model,
+        @RequestBody articleDto: ArticleDto
+    ): ResponseEntity<*> {
+        log.info("Received new article: {}", articleDto)
+        if (articleDto.id == null) {
+            throw IllegalArgumentException("Cannot update article, empty ID is provided")
+        } else {
+            val updatedArticle: Article = articleService.updateFromDto(articleDto.id!!, articleDto)
+            log.info("Updated an article: {}", updatedArticle)
+            return ResponseEntity.ok(
+                SuccessfullyModifiedResponse(
+                    updatedArticle.id!!,
+                    StatusCode.ENTITY_SUCCESSFULLY_UPDATED
+                )
+            )
+        }
+    }
+
     private fun renderAdminArticlePage(view: HtmlView): String {
         return view
             .addJs("/js/components/topic-autocomplete.js")
-            .addJs("/js/infrastructure/admin/add-article.js")
+            .addJs("/js/infrastructure/admin/article.js")
             .render()
     }
 

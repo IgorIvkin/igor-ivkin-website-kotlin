@@ -1,4 +1,4 @@
 package com.igorivkin.website.response
 
-abstract class BasicResponse(statusCode: Int, message: String?) {
+abstract class BasicResponse(val statusCode: Int, val message: String = "") {
 }

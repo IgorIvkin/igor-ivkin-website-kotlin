@@ -11,6 +11,7 @@ interface BaseService<EntityT, IdT, DtoT> {
     fun findAll(): List<EntityT>
     fun findAll(pageable: Pageable): Page<EntityT>
     fun findById(id: IdT): EntityT
+    fun loadForUpdateById(id: IdT): EntityT
     fun count(): Long
 
     fun updateFromDto(id: IdT, dto: DtoT): EntityT
@@ -20,5 +21,8 @@ interface BaseService<EntityT, IdT, DtoT> {
     fun deleteById(id: IdT)
     fun deleteAll()
 
+    fun toModel(dto: DtoT): EntityT
+    fun toDto(entity: EntityT): DtoT
+    fun fromDto(dto: DtoT, entity: EntityT): EntityT
     fun toListOfDto(entityList: List<EntityT>): List<DtoT>
 }

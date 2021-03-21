@@ -35,6 +35,11 @@ open class HtmlBasicView(
         return this
     }
 
+    override fun setJavascriptData(javaScriptData: String): HtmlView {
+        initModelWithObjectParameter("javaScriptData", javaScriptData)
+        return this
+    }
+
     override fun setContent(contentTemplateName: String): HtmlView {
         initModelWithObjectParameter("contentTemplateName", contentTemplateName)
         return this
@@ -59,6 +64,9 @@ open class HtmlBasicView(
 
     private fun beforeRender() {
         initModelWithObjectParameter("javascript", js)
+        if (!model.containsAttribute("javaScriptData")) {
+            initModelWithObjectParameter("javaScriptData", "~{}")
+        }
     }
 
 }

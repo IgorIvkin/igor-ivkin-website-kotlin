@@ -38,7 +38,7 @@ class UserServiceImpl(
         return userRepository.findByUsername(username)
     }
 
-    override fun fromDto(dto: UserDto): User {
+    override fun toModel(dto: UserDto): User {
         return converter.toModel(dto)
     }
 

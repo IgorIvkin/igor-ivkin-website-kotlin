@@ -24,7 +24,7 @@ class TopicServiceImpl(
 
     private val converter: TopicConverter = Mappers.getMapper(TopicConverter::class.java)
 
-    override fun fromDto(dto: TopicDto): Topic {
+    override fun toModel(dto: TopicDto): Topic {
         return converter.toModel(dto)
     }
 
