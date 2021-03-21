@@ -84,6 +84,8 @@ abstract class BaseServiceImpl<EntityT, IdT, DtoT> constructor(
     abstract fun toDto(entity: EntityT): DtoT
 
     override fun toListOfDto(entityList: List<EntityT>): List<DtoT> {
-        return entityList.map { entity -> this.toDto(entity) }.toList()
+        return entityList.map { 
+                entity -> this.toDto(entity)
+        }.toList()
     }
 }

@@ -45,13 +45,12 @@ class TopicAutocomplete extends React.Component {
         let topicId = event.target.getAttribute("data-topic-id");
         let topicTitle = event.target.getAttribute("data-topic-title");
         let currentSetTopics = this.state.setTopics;
-        let currentSetTopicIds = currentSetTopics.map((topic) => topic.id);
-        if (!currentSetTopicIds.includes(topicId)) {
+        if (!currentSetTopics.map((topic) => topic.id).includes(topicId)) {
             currentSetTopics.push({id: topicId, title: topicTitle});
             this.setState({
                 setTopics: currentSetTopics
             });
-            this.autocompleteInput.current.value="";
+            this.autocompleteInput.current.value = "";
         }
     }
 
@@ -73,8 +72,7 @@ class TopicAutocomplete extends React.Component {
                     onChange={(event) => this.doLookupSearch(event)}
                     type="text"
                     id="topics"
-                    name="topics"
-                    required="required"/>
+                    name="topics"/>
                 {this.state.foundTopics.length > 0 &&
                     <div className={"autocomplete"}>
                         {this.state.foundTopics.map(topic => {
@@ -90,7 +88,6 @@ class TopicAutocomplete extends React.Component {
                         })}
                     </div>
                 }
-                <!-- TODO: extract it to a dedicated component -->
                 {this.state.setTopics.length > 0 &&
                     <div className={"set-topics"}>
                         {this.state.setTopics.map(topic => {

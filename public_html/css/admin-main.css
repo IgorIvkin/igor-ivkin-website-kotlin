@@ -252,6 +252,7 @@ header .welcome {
     width:              100%;
     box-sizing:         border-box;
     background-clip:    padding-box;
+    font-family:        'Open Sans', sans, serif;
     font-size:          14px;
     outline:            none;
     padding:            .375rem .75rem;

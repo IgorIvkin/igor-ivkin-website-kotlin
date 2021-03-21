@@ -11,7 +11,7 @@ class Topic(
 
     @NotNull
     @Length(min = 1, max = 255)
-    var title: String,
+    var title: String?,
 
     @ManyToMany(mappedBy = "topics", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var articles: List<Article>? = mutableListOf<Article>()

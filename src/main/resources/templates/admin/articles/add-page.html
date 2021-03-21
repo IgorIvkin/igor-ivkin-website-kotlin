@@ -10,8 +10,8 @@
         <div class="item">Добавить статью</div>
     </div>
 
-    <form class="basic-form" id="topic-edit-form" method="post" th:action="@{/admin/articles/do-add/}">
-        <input type="hidden" name="author.id" th:value="${#authentication.getPrincipal().getUserDetails().id}">
+    <form class="basic-form" id="article-edit-form" method="post" th:action="@{/admin/articles/do-add/}">
+        <input type="hidden" id="author.id" name="author.id" th:value="${#authentication.getPrincipal().getUserDetails().id}">
         <div class="section">
             <label for="title">Название статьи</label><br />
             <input type="text" id="title" name="title" required="required" maxlength="255" autocomplete="off">

@@ -7,6 +7,7 @@ import com.igorivkin.website.repository.UserRepository
 import org.mapstruct.factory.Mappers
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import java.lang.IllegalArgumentException
 
 @Service
 class UserServiceImpl(
@@ -27,7 +28,7 @@ class UserServiceImpl(
     private val converter: UserConverter = Mappers.getMapper(UserConverter::class.java)
 
     override fun create(entity: User): User {
-        if (entity.password.isNotBlank()) {
+        if (entity.password?.isNotBlank() == true) {
             entity.password = passwordEncoder.encode(entity.password)
         }
         return super.create(entity)

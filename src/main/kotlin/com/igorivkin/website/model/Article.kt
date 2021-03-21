@@ -14,14 +14,14 @@ class Article(
 
     @NotNull
     @Length(min = 2, max = 255)
-    var title: String,
+    var title: String?,
 
     @NotNull
-    var content: String,
+    var content: String?,
 
-    @ManyToOne(cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
+    @ManyToOne(cascade = [CascadeType.REFRESH], fetch = FetchType.LAZY)
     @JoinColumn(name = "id_author", referencedColumnName = "id")
-    var author: User,
+    var author: User?,
 
     @CreationTimestamp
     val createdAt: Instant?,
@@ -29,7 +29,7 @@ class Article(
     @UpdateTimestamp
     var updatedAt: Instant?,
 
-    @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @ManyToMany(cascade = [CascadeType.REFRESH, CascadeType.REMOVE], fetch = FetchType.LAZY)
     @JoinTable(
         name = "articles_topics",
         joinColumns = [JoinColumn(name = "id_article", referencedColumnName = "id")],
