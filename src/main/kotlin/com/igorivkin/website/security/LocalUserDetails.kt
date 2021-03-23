@@ -5,13 +5,7 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
-class LocalUserDetails(): UserDetails {
-
-    private lateinit var user: User
-
-    constructor(user: User) : this() {
-        this.user = user;
-    }
+class LocalUserDetails(val user: User): UserDetails {
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         val authorities: MutableList<GrantedAuthority> = ArrayList()
@@ -19,12 +13,12 @@ class LocalUserDetails(): UserDetails {
         return authorities
     }
 
-    override fun getPassword(): String {
-        return user.password!!
+    override fun getPassword(): String? {
+        return user.password
     }
 
-    override fun getUsername(): String {
-        return user.username!!
+    override fun getUsername(): String? {
+        return user.username
     }
 
     override fun isAccountNonExpired(): Boolean {

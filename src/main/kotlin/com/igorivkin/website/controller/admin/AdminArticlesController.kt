@@ -33,9 +33,8 @@ class AdminArticlesController(
         model: Model,
         @PathVariable(required = false) pageNumber: Int?
     ): String {
-        val page: Page<Article> =
-            articleService.findAll(pageable = producePageableFromPageNumber(pageNumber), withTopics = true)
-        model.addAttribute("articles", articleService.toListOfDtoWithTopics(page.toList()))
+        val page: Page<Article> = articleService.findAll(pageable = producePageableFromPageNumber(pageNumber))
+        model.addAttribute("articles", articleService.toListOfDto(page.toList()))
         model.addAttribute("pageCount", page.totalPages)
         val view = HtmlBasicView(model)
         return renderAdminArticlePage(
@@ -92,7 +91,7 @@ class AdminArticlesController(
         return if (createdArticle.id != null) {
             ResponseEntity.ok(
                 SuccessfullyModifiedResponse(
-                    createdArticle.id!!,
+                    createdArticle.id,
                     StatusCode.ENTITY_SUCCESSFULLY_CREATED
                 )
             );
@@ -116,11 +115,11 @@ class AdminArticlesController(
         if (articleDto.id == null) {
             throw IllegalArgumentException("Cannot update article, empty ID is provided")
         } else {
-            val updatedArticle: Article = articleService.updateFromDto(articleDto.id!!, articleDto)
+            val updatedArticle: Article? = articleDto.id?.let { articleService.updateFromDto(it, articleDto) }
             log.info("Updated an article: {}", updatedArticle)
             return ResponseEntity.ok(
                 SuccessfullyModifiedResponse(
-                    updatedArticle.id!!,
+                    updatedArticle?.id,
                     StatusCode.ENTITY_SUCCESSFULLY_UPDATED
                 )
             )

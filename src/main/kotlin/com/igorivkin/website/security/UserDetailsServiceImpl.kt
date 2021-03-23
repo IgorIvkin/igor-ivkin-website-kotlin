@@ -16,7 +16,7 @@ class UserDetailsServiceImpl: UserDetailsService {
 
     @Transactional(readOnly = true)
     override fun loadUserByUsername(username: String?): UserDetails {
-        val user: User = userService.findByUsername(username!!) ?: throw IllegalArgumentException("Cannot load user by user name $username")
+        val user: User = username?.let { userService.findByUsername(it) } ?: throw IllegalArgumentException("Cannot load user by user name $username")
         return LocalUserDetails(user)
     }
 }
