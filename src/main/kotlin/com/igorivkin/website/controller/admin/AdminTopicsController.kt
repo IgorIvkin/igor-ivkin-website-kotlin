@@ -1,6 +1,7 @@
 package com.igorivkin.website.controller.admin
 
 import com.igorivkin.website.dto.TopicDto
+import com.igorivkin.website.mapper.TopicMapper
 import com.igorivkin.website.service.TopicService
 import com.igorivkin.website.view.HtmlBasicView
 import org.springframework.http.MediaType
@@ -41,7 +42,7 @@ class AdminTopicsController(
         consumes = [MediaType.APPLICATION_FORM_URLENCODED_VALUE]
     )
     fun processDoAddTopic(topicDto: TopicDto): String {
-        topicService.createFromDto(topicDto)
+        topicService.create(TopicMapper.toModel(topicDto))
         return "redirect:/admin/topics/"
     }
 
@@ -66,7 +67,7 @@ class AdminTopicsController(
     fun processDoEditTopic(redirectAttributes: RedirectAttributes,
                            @RequestParam("id") topicId: Long,
                            topicDto: TopicDto): String {
-        topicService.updateFromDto(topicId, topicDto)
+        topicService.update(topicId, TopicMapper.toModel(topicDto))
         redirectAttributes.addFlashAttribute("updateStatus", "success")
         return "redirect:/admin/topics/edit/${topicId}/"
     }

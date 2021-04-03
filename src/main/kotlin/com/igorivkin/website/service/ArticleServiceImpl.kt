@@ -1,12 +1,8 @@
 package com.igorivkin.website.service
 
-import com.igorivkin.website.converter.ArticleConverter
-import com.igorivkin.website.converter.ArticleConverterWithTopics
-import com.igorivkin.website.dto.ArticleDto
 import com.igorivkin.website.model.Article
 import com.igorivkin.website.repository.ArticleRepository
 import org.hibernate.Hibernate
-import org.mapstruct.factory.Mappers
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -15,13 +11,12 @@ import javax.transaction.Transactional
 
 @Service
 class ArticleServiceImpl(
-    private val articleRepository: ArticleRepository
+    articleRepository: ArticleRepository
 ):
     // extends
-    BaseServiceImpl<Article, Long, ArticleDto>(
+    BaseServiceImpl<Article, Long>(
         articleRepository,
-        Article::class.java,
-        ArticleDto::class.java
+        Article::class.java
     ),
 
     // implements
@@ -29,9 +24,6 @@ class ArticleServiceImpl(
 {
     @Autowired
     private lateinit var articleService: ArticleService
-
-    private val converter: ArticleConverter = Mappers.getMapper(ArticleConverter::class.java)
-    private val converterWithTopics: ArticleConverterWithTopics = Mappers.getMapper(ArticleConverterWithTopics::class.java)
 
     @Transactional
     override fun findAll(pageable: Pageable, withTopics: Boolean): Page<Article> {
@@ -55,28 +47,5 @@ class ArticleServiceImpl(
 
     override fun loadForUpdateById(id: Long): Article {
         return articleService.findById(id, withTopics = true)
-    }
-
-    override fun toModel(dto: ArticleDto): Article {
-        return converter.toModel(dto)
-    }
-
-    override fun toDto(entity: Article): ArticleDto {
-        return converter.toDto(entity)
-    }
-
-    override fun fromDto(dto: ArticleDto, entity: Article): Article {
-        converterWithTopics.fromDto(dto, entity)
-        return entity
-    }
-
-    override fun toListOfDtoWithTopics(entityList: List<Article>): List<ArticleDto> {
-        return entityList.map {
-                entity -> this.toDtoWithTopics(entity)
-        }.toList()
-    }
-
-    override fun toDtoWithTopics(entity: Article): ArticleDto {
-        return converterWithTopics.toDto(entity)
     }
 }

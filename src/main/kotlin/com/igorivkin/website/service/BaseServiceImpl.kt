@@ -3,15 +3,14 @@ package com.igorivkin.website.service
 import com.igorivkin.website.exception.EntityDoesNotExistException
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import java.util.function.BiFunction
 import org.springframework.data.jpa.repository.JpaRepository
+import java.util.function.Function
 import javax.transaction.Transactional
 
-abstract class BaseServiceImpl<EntityT, IdT, DtoT> constructor(
+abstract class BaseServiceImpl<EntityT, IdT> constructor(
     private val repository: JpaRepository<EntityT, IdT>,
-    private val entityTypeClass: Class<EntityT>?,
-    private val dtoTypeClass: Class<DtoT>?,
-): BaseService<EntityT, IdT, DtoT> {
+    private val entityTypeClass: Class<EntityT>?
+): BaseService<EntityT, IdT> {
 
 
     override fun create(entity: EntityT): EntityT {
@@ -21,21 +20,15 @@ abstract class BaseServiceImpl<EntityT, IdT, DtoT> constructor(
         return repository.save(entity)
     }
 
-    override fun createFromDto(dto: DtoT): EntityT {
-        val entityToSave: EntityT = toModel(dto)
-        return create(entityToSave)
-    }
-
-    override fun updateFromDto(id: IdT, dto: DtoT): EntityT {
-        return updateFromDto(id, dto, null)
+    override fun update(id: IdT, entity: EntityT): EntityT {
+        return update(id, entity, null)
     }
 
     @Transactional
-    override fun updateFromDto(id: IdT, dto: DtoT, mappingCallback: BiFunction<EntityT, DtoT, EntityT>?): EntityT {
+    override fun update(id: IdT, entity: EntityT, mappingCallback: Function<EntityT, EntityT>?): EntityT {
         var entityToUpdate: EntityT = loadForUpdateById(id)
-        entityToUpdate = fromDto(dto, entityToUpdate)
         if(mappingCallback != null) {
-            entityToUpdate = mappingCallback.apply(entityToUpdate, dto)
+            entityToUpdate = mappingCallback.apply(entityToUpdate)
         }
         if(entityToUpdate != null) {
             return repository.save(entityToUpdate)
@@ -83,15 +76,5 @@ abstract class BaseServiceImpl<EntityT, IdT, DtoT> constructor(
 
     override fun count(): Long {
         return repository.count()
-    }
-
-    override fun fromDto(dto: DtoT, entity: EntityT): EntityT {
-        return this.toModel(dto)
-    }
-
-    override fun toListOfDto(entityList: List<EntityT>): List<DtoT> {
-        return entityList.map { 
-                entity -> this.toDto(entity)
-        }.toList()
     }
 }

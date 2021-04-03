@@ -1,13 +1,9 @@
 package com.igorivkin.website.service
 
-import com.igorivkin.website.converter.UserConverter
-import com.igorivkin.website.dto.UserDto
 import com.igorivkin.website.model.User
 import com.igorivkin.website.repository.UserRepository
-import org.mapstruct.factory.Mappers
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-import java.lang.IllegalArgumentException
 
 @Service
 class UserServiceImpl(
@@ -15,18 +11,14 @@ class UserServiceImpl(
     private val passwordEncoder: PasswordEncoder
 ):
     // extends
-    BaseServiceImpl<User, Long, UserDto>(
+    BaseServiceImpl<User, Long>(
         userRepository,
-        User::class.java,
-        UserDto::class.java
+        User::class.java
     ),
 
     // implements
     UserService
 {
-
-    private val converter: UserConverter = Mappers.getMapper(UserConverter::class.java)
-
     override fun create(entity: User): User {
         if (entity.password?.isNotBlank() == true) {
             entity.password = passwordEncoder.encode(entity.password)
@@ -36,13 +28,5 @@ class UserServiceImpl(
 
     override fun findByUsername(username: String): User? {
         return userRepository.findByUsername(username)
-    }
-
-    override fun toModel(dto: UserDto): User {
-        return converter.toModel(dto)
-    }
-
-    override fun toDto(entity: User): UserDto {
-        return converter.toDto(entity)
     }
 }
