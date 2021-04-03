@@ -24,7 +24,7 @@ class Article(
     var author: User?,
 
     @CreationTimestamp
-    val createdAt: Instant?,
+    var createdAt: Instant?,
 
     @UpdateTimestamp
     var updatedAt: Instant?,

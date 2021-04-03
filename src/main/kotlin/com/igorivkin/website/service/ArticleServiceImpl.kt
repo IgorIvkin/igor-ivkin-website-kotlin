@@ -48,4 +48,14 @@ class ArticleServiceImpl(
     override fun loadForUpdateById(id: Long): Article {
         return articleService.findById(id, withTopics = true)
     }
+
+    override fun mapBeforeUpdate(updateTo: Article, updateFrom: Article): Article {
+        if (updateFrom.createdAt == null) {
+            updateFrom.createdAt = updateTo.createdAt
+        }
+        if (updateFrom.author == null) {
+            updateFrom.author = updateTo.author
+        }
+        return updateFrom
+    }
 }

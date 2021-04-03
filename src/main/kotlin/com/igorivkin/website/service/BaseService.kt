@@ -10,11 +10,10 @@ interface BaseService<EntityT, IdT> {
     fun findAll(): List<EntityT>
     fun findAll(pageable: Pageable): Page<EntityT>
     fun findById(id: IdT): EntityT
-    fun loadForUpdateById(id: IdT): EntityT
     fun count(): Long
 
-    fun update(id: IdT, entity: EntityT): EntityT
-    fun update(id: IdT, entity: EntityT, mappingCallback: Function<EntityT, EntityT>?): EntityT
+    fun update(id: IdT, entityFromUpdate: EntityT): EntityT
+    fun update(id: IdT, entityFromUpdate: EntityT, mappingCallback: Function<EntityT, EntityT>?): EntityT
 
     fun delete(entity: EntityT)
     fun deleteById(id: IdT)
