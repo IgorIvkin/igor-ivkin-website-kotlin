@@ -136,6 +136,7 @@ class AdminArticlesController(
     private fun renderAdminArticlePage(view: HtmlView): String {
         return view
                 .addJs("/js/components/topic-autocomplete.js")
+                .addJs("/js/components/article-preview.js")
                 .addJs("/js/infrastructure/admin/article.js")
                 .render()
     }

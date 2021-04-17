@@ -16,6 +16,7 @@ class UserServiceTests {
     @Autowired
     private lateinit var userService: UserService
 
+    /*
     @Test
     fun creationUserTest() {
         val userDto = UserDto(
@@ -28,6 +29,6 @@ class UserServiceTests {
         assertNotNull(createdUser.id)
         assertNotNull(createdUser.createdAt)
         assertEquals(createdUser.title, "Admin")
-    }
+    }*/
 
 }

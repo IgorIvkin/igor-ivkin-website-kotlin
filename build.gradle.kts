@@ -16,6 +16,7 @@ java.sourceCompatibility = JavaVersion.VERSION_11
 repositories {
 	jcenter()
 	mavenCentral()
+	maven(url = "https://dl.bintray.com/jetbrains/markdown")
 }
 
 dependencies {
@@ -29,6 +30,10 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
+	// CommonMark for Markdown
+	implementation("org.commonmark:commonmark:0.17.1")
+	implementation("org.commonmark:commonmark-ext-gfm-tables:0.17.1")
 
 	// MapStruct
 	implementation("org.mapstruct:mapstruct:1.4.2.Final")
