@@ -1,9 +1,7 @@
-package com.igorivkin.website.mapper
+package com.igorivkin.website.service.mapper
 
 import com.igorivkin.website.converter.TopicConverter
-import com.igorivkin.website.dto.ArticleDto
 import com.igorivkin.website.dto.TopicDto
-import com.igorivkin.website.model.Article
 import com.igorivkin.website.model.Topic
 import org.mapstruct.factory.Mappers
 

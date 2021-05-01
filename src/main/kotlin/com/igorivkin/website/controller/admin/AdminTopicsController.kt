@@ -1,7 +1,7 @@
 package com.igorivkin.website.controller.admin
 
 import com.igorivkin.website.dto.TopicDto
-import com.igorivkin.website.mapper.TopicMapper
+import com.igorivkin.website.service.mapper.TopicMapper
 import com.igorivkin.website.service.TopicService
 import com.igorivkin.website.view.HtmlBasicView
 import org.springframework.http.MediaType

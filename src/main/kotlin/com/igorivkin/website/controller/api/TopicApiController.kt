@@ -1,6 +1,7 @@
 package com.igorivkin.website.controller.api
 
-import com.igorivkin.website.mapper.TopicMapper
+import com.igorivkin.website.dto.TopicDto
+import com.igorivkin.website.service.mapper.TopicMapper
 import com.igorivkin.website.service.TopicService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -14,7 +15,7 @@ class TopicApiController(
 ) {
 
     @GetMapping("/api/topics/{title}")
-    fun findByTitle(@PathVariable title: String): ResponseEntity<*> {
+    fun findByTitle(@PathVariable title: String): ResponseEntity<List<TopicDto>> {
         val topics = TopicMapper.toListOfDto(topicService.findByTitle(title))
         return if(topics.isNotEmpty()) {
             ResponseEntity.ok(topics)

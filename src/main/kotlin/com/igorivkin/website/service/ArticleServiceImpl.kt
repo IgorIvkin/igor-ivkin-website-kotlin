@@ -2,6 +2,7 @@ package com.igorivkin.website.service
 
 import com.igorivkin.website.model.Article
 import com.igorivkin.website.repository.ArticleRepository
+import com.igorivkin.website.repository.specification.ArticleSpecifications
 import org.hibernate.Hibernate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
@@ -11,17 +12,14 @@ import javax.transaction.Transactional
 
 @Service
 class ArticleServiceImpl(
-    articleRepository: ArticleRepository
-):
-    // extends
-    BaseServiceImpl<Article, Long>(
+    private val articleRepository: ArticleRepository
+) : BaseServiceImpl<Article, Long>(
         articleRepository,
         Article::class.java
     ),
 
-    // implements
-    ArticleService
-{
+    ArticleService {
+
     @Autowired
     private lateinit var articleService: ArticleService
 
@@ -43,6 +41,10 @@ class ArticleServiceImpl(
             Hibernate.initialize(article.topics)
         }
         return article
+    }
+
+    override fun findByTitle(title: String): List<Article> {
+        return articleRepository.findAll(ArticleSpecifications.titleContains(title))
     }
 
     override fun loadForUpdateById(id: Long): Article {

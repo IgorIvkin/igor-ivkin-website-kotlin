@@ -1,4 +1,4 @@
-package com.igorivkin.website.mapper
+package com.igorivkin.website.service.mapper
 
 import com.igorivkin.website.converter.ArticleConverter
 import com.igorivkin.website.converter.ArticleConverterWithTopics

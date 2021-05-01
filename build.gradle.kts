@@ -26,6 +26,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 	implementation("org.postgresql:postgresql")
+	implementation("com.vladmihalcea:hibernate-types-52:2.10.4")
 	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity5")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")

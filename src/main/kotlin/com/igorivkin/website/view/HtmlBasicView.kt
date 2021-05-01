@@ -35,6 +35,10 @@ open class HtmlBasicView(
         return this
     }
 
+    /**
+     * Allows to define a set of data that should be passed to javascript code
+     * on the page. They will be rendered in <header> section.
+     */
     override fun setJavascriptData(javaScriptData: String): HtmlView {
         initModelWithObjectParameter("javaScriptData", javaScriptData)
         return this
