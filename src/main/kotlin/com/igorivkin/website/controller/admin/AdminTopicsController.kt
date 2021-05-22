@@ -41,15 +41,17 @@ class AdminTopicsController(
         method = [RequestMethod.POST],
         consumes = [MediaType.APPLICATION_FORM_URLENCODED_VALUE]
     )
-    fun processDoAddTopic(topicDto: TopicDto): String {
+    fun add(topicDto: TopicDto): String {
         topicService.create(TopicMapper.toModel(topicDto))
         return "redirect:/admin/topics/"
     }
 
     @GetMapping("/admin/topics/edit/{topicId}")
-    fun renderEditPage(model: Model,
-                       @PathVariable topicId: Long,
-                       @ModelAttribute("updateStatus") updateStatus: String): String {
+    fun renderEditPage(
+        model: Model,
+        @PathVariable topicId: Long,
+        @ModelAttribute("updateStatus") updateStatus: String
+    ): String {
         model.addAttribute("topic", topicService.findById(topicId))
         val view = HtmlBasicView(model)
         return view
@@ -64,9 +66,11 @@ class AdminTopicsController(
         method = [RequestMethod.POST],
         consumes = [MediaType.APPLICATION_FORM_URLENCODED_VALUE]
     )
-    fun processDoEditTopic(redirectAttributes: RedirectAttributes,
-                           @RequestParam("id") topicId: Long,
-                           topicDto: TopicDto): String {
+    fun edit(
+        redirectAttributes: RedirectAttributes,
+        @RequestParam("id") topicId: Long,
+        topicDto: TopicDto
+    ): String {
         topicService.update(topicId, TopicMapper.toModel(topicDto))
         redirectAttributes.addFlashAttribute("updateStatus", "success")
         return "redirect:/admin/topics/edit/${topicId}/"

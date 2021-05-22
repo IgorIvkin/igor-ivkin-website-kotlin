@@ -1,10 +1,19 @@
 package com.igorivkin.website.model
 
+import com.vladmihalcea.hibernate.type.array.IntArrayType
+import com.vladmihalcea.hibernate.type.array.LongArrayType
+import com.vladmihalcea.hibernate.type.array.StringArrayType
+import org.hibernate.annotations.Type
+import org.hibernate.annotations.TypeDef
+import org.hibernate.annotations.TypeDefs
 import org.hibernate.validator.constraints.Length
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 
 @Entity(name = "courses")
+@TypeDefs(value = [
+    TypeDef(name = "long-array", typeClass = LongArrayType::class),
+])
 class Course(
 
     @NotNull
@@ -12,6 +21,13 @@ class Course(
     var title: String?,
 
     var description: String?,
+
+    @Type(type = "long-array")
+    @Column(
+        name = "ordered_articles",
+        columnDefinition = "int8[]"
+    )
+    var orderedArticles: LongArray,
 
     @ManyToMany(cascade = [CascadeType.REFRESH, CascadeType.REMOVE], fetch = FetchType.LAZY)
     @JoinTable(

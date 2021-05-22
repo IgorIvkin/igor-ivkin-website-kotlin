@@ -14,11 +14,9 @@ import javax.transaction.Transactional
 class ArticleServiceImpl(
     private val articleRepository: ArticleRepository
 ) : BaseServiceImpl<Article, Long>(
-        articleRepository,
-        Article::class.java
-    ),
-
-    ArticleService {
+    articleRepository,
+    Article::class.java
+), ArticleService {
 
     @Autowired
     private lateinit var articleService: ArticleService

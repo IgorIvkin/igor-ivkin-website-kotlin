@@ -72,6 +72,7 @@ class TopicAutocomplete extends React.Component {
                     onChange={(event) => this.doLookupSearch(event)}
                     type="text"
                     id="topics"
+                    autoComplete={"off"}
                     name="topics"/>
                 {this.state.foundTopics.length > 0 &&
                     <div className={"autocomplete"}>

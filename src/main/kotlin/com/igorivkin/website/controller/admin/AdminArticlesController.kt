@@ -23,7 +23,7 @@ import java.lang.IllegalArgumentException
 
 @Controller
 class AdminArticlesController(
-        private val articleService: ArticleService
+    private val articleService: ArticleService
 ) {
 
     private val log = LoggerFactory.getLogger(AdminArticlesController::class.java)
@@ -31,18 +31,18 @@ class AdminArticlesController(
 
     @GetMapping("/admin/articles/", "/admin/articles/page/{pageNumber}")
     fun renderMainPage(
-            model: Model,
-            @PathVariable(required = false) pageNumber: Int?
+        model: Model,
+        @PathVariable(required = false) pageNumber: Int?
     ): String {
         val page: Page<Article> = articleService.findAll(pageable = producePageableFromPageNumber(pageNumber))
         model.addAttribute("articles", ArticleMapper.toListOfDto(page.toList()))
         model.addAttribute("pageCount", page.totalPages)
         val view = HtmlBasicView(model)
         return renderAdminArticlePage(
-                view
-                        .setTitle("Администраторский интерфейс - Статьи")
-                        .setMainTemplate("admin/main-template")
-                        .setContent("admin/articles/main-page :: content")
+            view
+                .setTitle("Администраторский интерфейс - Статьи")
+                .setMainTemplate("admin/main-template")
+                .setContent("admin/articles/main-page :: content")
         );
     }
 
@@ -50,95 +50,87 @@ class AdminArticlesController(
     fun renderAddPage(model: Model): String {
         val view = HtmlBasicView(model)
         return renderAdminArticlePage(
-                view
-                        .setTitle("Администраторский интерфейс - Статьи")
-                        .setMainTemplate("admin/main-template")
-                        .setContent("admin/articles/add-page :: content")
+            view
+                .setTitle("Администраторский интерфейс - Статьи")
+                .setMainTemplate("admin/main-template")
+                .setContent("admin/articles/add-page :: content")
         );
     }
 
     @GetMapping("/admin/articles/edit/{articleId}")
     fun renderEditPage(
-            model: Model,
-            @PathVariable articleId: Long
+        model: Model,
+        @PathVariable articleId: Long
     ): String {
         model.addAttribute(
-                "article",
-                ArticleMapper.toDto(
-                        articleService.findById(id = articleId, withTopics = true),
-                        withTopics = true
-                )
+            "article",
+            ArticleMapper.toDto(
+                articleService.findById(id = articleId, withTopics = true),
+                withTopics = true
+            )
         )
         val view = HtmlBasicView(model)
         return renderAdminArticlePage(
-                view
-                        .setTitle("Администраторский интерфейс - Статьи")
-                        .setMainTemplate("admin/main-template")
-                        .setJavascriptData("admin/articles/edit-page :: javascript-data")
-                        .setContent("admin/articles/edit-page :: content")
+            view
+                .setTitle("Администраторский интерфейс - Статьи")
+                .setMainTemplate("admin/main-template")
+                .setJavascriptData("admin/articles/edit-page :: javascript-data")
+                .setContent("admin/articles/edit-page :: content")
         );
     }
 
     @RequestMapping(
-            value = ["/admin/articles/do-add/"],
-            method = [RequestMethod.POST],
-            consumes = [MediaType.APPLICATION_JSON_VALUE],
-            produces = [MediaType.APPLICATION_JSON_VALUE]
+        value = ["/admin/articles/do-add/"],
+        method = [RequestMethod.POST],
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
     )
-    fun processDoAddArticle(
-            model: Model,
-            @RequestBody articleDto: ArticleDto
+    fun add(
+        model: Model,
+        @RequestBody articleDto: ArticleDto
     ): ResponseEntity<BasicResponse> {
         log.info("Received new article: {}", articleDto)
         val createdArticle: Article = articleService.create(ArticleMapper.toModel(articleDto, withTopics = true))
+        val createdArticleId = createdArticle.id
         log.info("Created new article: {}", createdArticle)
-        return if (createdArticle.id != null) {
-            ResponseEntity.ok(
-                    SuccessfullyModifiedResponse(
-                            createdArticle.id,
-                            StatusCode.ENTITY_SUCCESSFULLY_CREATED
-                    )
-            );
+        return if (createdArticleId != null) {
+            successfullyCreatedArticleResponse(createdArticleId)
         } else {
-            // TODO: set good status code here
             ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
+
     @RequestMapping(
-            value = ["/admin/articles/do-edit/"],
-            method = [RequestMethod.POST],
-            consumes = [MediaType.APPLICATION_JSON_VALUE],
-            produces = [MediaType.APPLICATION_JSON_VALUE]
+        value = ["/admin/articles/do-edit/"],
+        method = [RequestMethod.POST],
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
     )
-    fun processDoEditArticle(
-            model: Model,
-            @RequestBody articleDto: ArticleDto
-    ): ResponseEntity<*> {
+    fun edit(
+        model: Model,
+        @RequestBody articleDto: ArticleDto
+    ): ResponseEntity<BasicResponse> {
         log.info("Received new article: {}", articleDto)
-        if (articleDto.id == null) {
+        val articleId = articleDto.id
+        if (articleId == null) {
             throw IllegalArgumentException("Cannot update article, empty ID is provided")
         } else {
             val updatedArticle: Article = articleService.update(
-                    articleDto.id!!,
-                    ArticleMapper.toModel(articleDto, withTopics = true)
+                articleId,
+                ArticleMapper.toModel(articleDto, withTopics = true)
             )
             log.info("Updated an article: {}", updatedArticle)
-            return ResponseEntity.ok(
-                    SuccessfullyModifiedResponse(
-                            updatedArticle.id,
-                            StatusCode.ENTITY_SUCCESSFULLY_UPDATED
-                    )
-            )
+            return successfullyUpdatedArticleResponse(articleId)
         }
     }
 
     private fun renderAdminArticlePage(view: HtmlView): String {
         return view
-                .addJs("/js/components/topic-autocomplete.js")
-                .addJs("/js/components/article-preview.js")
-                .addJs("/js/infrastructure/admin/article.js")
-                .render()
+            .addJs("/js/components/topic-autocomplete.js")
+            .addJs("/js/components/article-preview.js")
+            .addJs("/js/infrastructure/admin/article.js")
+            .render()
     }
 
     private fun producePageableFromPageNumber(pageNumber: Int?): Pageable {
@@ -147,5 +139,23 @@ class AdminArticlesController(
         } else {
             PageRequest.of(0, articlesPerPage);
         }
+    }
+
+    private fun successfullyCreatedArticleResponse(id: Long): ResponseEntity<BasicResponse> {
+        return ResponseEntity.ok(
+            SuccessfullyModifiedResponse(
+                id,
+                StatusCode.ENTITY_SUCCESSFULLY_CREATED
+            )
+        )
+    }
+
+    private fun successfullyUpdatedArticleResponse(id: Long): ResponseEntity<BasicResponse> {
+        return ResponseEntity.ok(
+            SuccessfullyModifiedResponse(
+                id,
+                StatusCode.ENTITY_SUCCESSFULLY_UPDATED
+            )
+        )
     }
 }
