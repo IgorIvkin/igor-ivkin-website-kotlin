@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<body>
+<div th:fragment="content">
+  <h1 th:text="${article.title}">Заголовок статьи</h1>
+  <div class="topics">
+    <div class="item" th:each="topic: ${article.topics}">
+      <a href="#" th:text="${topic.title}"></a>
+    </div>
+  </div>
+  <div th:utext="${article.content}"></div>
+</div>
+</body>
+</html>

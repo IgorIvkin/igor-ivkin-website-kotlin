@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.SessionAttributes
 import org.springframework.web.bind.support.SessionStatus
+import javax.servlet.http.HttpServletRequest
 
 @Controller
 @RequestMapping("/account")
@@ -22,7 +23,7 @@ class UserController {
     private val userConverter: UserConverter = Mappers.getMapper(UserConverter::class.java)
 
     @RequestMapping("/login")
-    fun processLogin(model: Model): String {
+    fun processLogin(model: Model, request: HttpServletRequest): String {
         return "account/login-main"
     }
 

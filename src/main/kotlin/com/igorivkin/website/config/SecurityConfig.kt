@@ -12,7 +12,6 @@ import com.igorivkin.website.security.UserDetailsServiceImpl
 
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import java.lang.Exception
 
 
 @Configuration
@@ -20,7 +19,7 @@ import java.lang.Exception
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 class SecurityConfig: WebSecurityConfigurerAdapter() {
 
-    private val REMEMBER_ME_KEY = "rememberToken"
+    private val rememberMeToken = "rememberToken"
 
     @Bean
     fun passwordEncoder(): BCryptPasswordEncoder? {
@@ -40,15 +39,13 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
         return authProvider
     }
 
-    @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
         http
             .authorizeRequests().antMatchers("/admin/**").hasAnyRole("ADMINISTRATOR")
             .and()
             .authorizeRequests().antMatchers("/account/login", "/resource/**").permitAll()
             .and()
-            .formLogin().loginPage("/account/login").usernameParameter("username").passwordParameter("password")
-            .permitAll()
+            .formLogin().loginPage("/account/login").usernameParameter("username").passwordParameter("password").permitAll()
             .loginProcessingUrl("/account/doLogin")
             .successForwardUrl("/account/postLogin")
             .failureUrl("/account/loginFailed")
@@ -56,7 +53,8 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
             .logout().deleteCookies("JSESSIONID", "remember-me").logoutUrl("/account/doLogout")
             .logoutSuccessUrl("/account/logout").permitAll()
             .and()
-            .rememberMe().key(REMEMBER_ME_KEY).userDetailsService(getUserDetailsService())
+            .rememberMe().key(rememberMeToken)
+            .userDetailsService(getUserDetailsService())
             .and()
             .csrf().disable()
     }

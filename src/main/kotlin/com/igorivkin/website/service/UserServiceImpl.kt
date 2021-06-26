@@ -9,16 +9,11 @@ import org.springframework.stereotype.Service
 class UserServiceImpl(
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder
-):
-    // extends
-    BaseServiceImpl<User, Long>(
-        userRepository,
-        User::class.java
-    ),
+) : BaseServiceImpl<User, Long>(
+    userRepository,
+    User::class.java
+), UserService {
 
-    // implements
-    UserService
-{
     override fun create(entity: User): User {
         if (entity.password?.isNotBlank() == true) {
             entity.password = passwordEncoder.encode(entity.password)
@@ -29,4 +24,5 @@ class UserServiceImpl(
     override fun findByUsername(username: String): User? {
         return userRepository.findByUsername(username)
     }
+
 }

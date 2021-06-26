@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head th:fragment="head-element">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title th:inline="text">[[${pageTitle}]]</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap&subset=cyrillic" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link href="/css/main.css" rel="stylesheet" type="text/css">
+
+    <!-- Render dynamically added javascripts -->
+
+    <th:block th:replace="__${javaScriptData}__"></th:block>
+
+    <th:block th:each="script : ${javascript}">
+        <script th:src="${script}" crossorigin></script>
+    </th:block>
+</head>
+<body>
+
+<div class="header-container" th:fragment="header">
+    <header>
+        <div class="company-name">
+            <a href="/"><img src="/images/logo1.png"></a>
+        </div>
+        <div class="menu">
+            <div class="item"><a href="/articles">Статьи</a></div>
+            <div class="item"><a href="#">Курсы</a></div>
+            <div class="item"><a href="/about">О сайте</a></div>
+        </div>
+    </header>
+</div>
+
+<div th:fragment="left-menu">
+    <nav class="left-menu">
+        <ul class="menu-items">
+            <li class="menu-item">
+                <a href="/admin/">Главная</a>
+            </li>
+            <li class="menu-item">
+                <a href="/admin/topics/">Темы статей</a>
+            </li>
+            <li class="menu-item">
+                <a href="/admin/articles/">Статьи</a>
+            </li>
+            <li class="menu-item">
+                <a href="/admin/courses/">Курсы</a>
+            </li>
+        </ul>
+
+        <div class="copyright">
+            <span class="title">Игорь Ивкин</span><br />
+            Администраторский интерфейс &copy;2021
+        </div>
+    </nav>
+</div>
+
+<div class="footer" th:fragment="footer">
+</div>
+</body>
+</html>
