@@ -1,11 +1,18 @@
 package com.igorivkin.website.service
 
-import com.igorivkin.website.persistence.entity.Article
+import com.igorivkin.website.controller.dto.IdValue
+import com.igorivkin.website.controller.dto.article.ArticleCreateRequest
+import com.igorivkin.website.controller.dto.article.ArticleGetResponse
+import com.igorivkin.website.controller.dto.article.ArticleGetSimplifiedResponse
+import com.igorivkin.website.controller.dto.article.ArticleUpdateRequest
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
-interface ArticleService : BaseService<Article, Long>  {
-    fun findById(id: Long, withTopics: Boolean): Article
-    fun findByTitle(title: String): List<Article>
-    fun findAll(pageable: Pageable, withTopics: Boolean): Page<Article>
+interface ArticleService  {
+    fun findById(id: Long): ArticleGetResponse
+    fun findByTitle(title: String): List<ArticleGetSimplifiedResponse>
+    fun findAll(pageable: Pageable): Page<ArticleGetResponse>
+
+    fun create(request: ArticleCreateRequest): IdValue<Long>
+    fun update(id: Long, request: ArticleUpdateRequest): IdValue<Long>
 }

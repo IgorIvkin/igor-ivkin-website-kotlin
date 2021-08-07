@@ -1,7 +1,10 @@
 package com.igorivkin.website.persistence.entity
 
 import org.hibernate.validator.constraints.Length
-import javax.persistence.*
+import javax.persistence.CascadeType
+import javax.persistence.Entity
+import javax.persistence.FetchType
+import javax.persistence.ManyToMany
 import javax.validation.constraints.NotNull
 
 @Entity(name = "topics")

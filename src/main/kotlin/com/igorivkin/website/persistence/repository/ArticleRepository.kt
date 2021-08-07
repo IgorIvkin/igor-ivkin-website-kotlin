@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor
 import org.springframework.stereotype.Repository
 
 @Repository
-interface ArticleRepository: JpaRepository<Article, Long>, JpaSpecificationExecutor<Article>
+interface ArticleRepository: JpaRepository<Article, Long>, JpaSpecificationExecutor<Article> {
+    fun findAllByTitleContainingIgnoreCase(title: String): List<Article>;
+}

@@ -2,7 +2,6 @@ package com.igorivkin.website.controller
 
 import com.igorivkin.website.service.ArticleService
 import com.igorivkin.website.service.MarkdownParserService
-import com.igorivkin.website.service.mapper.ArticleMapper
 import com.igorivkin.website.view.HtmlBasicView
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -17,13 +16,10 @@ class ArticleController(
 
     @GetMapping("/articles/{articleId}")
     fun renderArticlePage(@PathVariable articleId: Long, model: Model): String {
-        val article = ArticleMapper.toDto(
-            articleService.findById(articleId, withTopics = true),
-            withTopics = true
-        )
-        article.content = markdownParserService.parse(article.content)
+        val article = articleService.findById(articleId)
+        val articleModified = article.copy(content = markdownParserService.parse(article.content))
 
-        model.addAttribute("article", article)
+        model.addAttribute("article", articleModified)
         val view = HtmlBasicView(model)
         return view
             .setTitle(article.title + " — Статья на сайте igorivkin.com")

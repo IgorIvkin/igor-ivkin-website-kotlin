@@ -1,8 +1,6 @@
 package com.igorivkin.website.persistence.entity
 
 import org.hibernate.annotations.CreationTimestamp
-import org.hibernate.annotations.Fetch
-import org.hibernate.annotations.FetchMode
 import org.hibernate.annotations.UpdateTimestamp
 import org.hibernate.validator.constraints.Length
 import java.time.Instant
@@ -23,7 +21,6 @@ class Article(
     var content: String?,
 
     @ManyToOne
-    @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     var author: User?,
 

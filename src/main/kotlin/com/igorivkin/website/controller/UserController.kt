@@ -1,9 +1,8 @@
 package com.igorivkin.website.controller
 
-import com.igorivkin.website.converter.UserConverter
-import com.igorivkin.website.persistence.entity.User
 import com.igorivkin.website.config.security.LocalUserDetails
-import org.mapstruct.factory.Mappers
+import com.igorivkin.website.persistence.entity.User
+import com.igorivkin.website.service.mapper.UserMapper
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Controller
@@ -18,9 +17,9 @@ import javax.servlet.http.HttpServletRequest
 @Controller
 @RequestMapping("/account")
 @SessionAttributes(names = ["currentUser"])
-class UserController {
-
-    private val userConverter: UserConverter = Mappers.getMapper(UserConverter::class.java)
+class UserController(
+    private val userMapper: UserMapper
+) {
 
     @RequestMapping("/login")
     fun processLogin(model: Model, request: HttpServletRequest): String {
@@ -46,7 +45,7 @@ class UserController {
             SecurityContextHolder.getContext().authentication as UsernamePasswordAuthenticationToken
         validatePrincipal(authentication.principal)
         val loggedInUser: User = (authentication.principal as LocalUserDetails).getUserDetails()
-        model.addAttribute("currentUser", userConverter.toDto(loggedInUser))
+        model.addAttribute("currentUser", userMapper.toDto(loggedInUser))
         return "redirect:/admin/"
     }
 

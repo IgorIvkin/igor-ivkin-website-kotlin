@@ -1,7 +1,6 @@
 package com.igorivkin.website.controller.api
 
 import com.igorivkin.website.controller.dto.topic.TopicGetResponse
-import com.igorivkin.website.dto.TopicDto
 import com.igorivkin.website.service.TopicService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

@@ -1,61 +1,70 @@
 package com.igorivkin.website.service
 
-import com.igorivkin.website.persistence.entity.Article
+import com.igorivkin.website.controller.dto.IdValue
+import com.igorivkin.website.controller.dto.article.ArticleCreateRequest
+import com.igorivkin.website.controller.dto.article.ArticleGetResponse
+import com.igorivkin.website.controller.dto.article.ArticleGetSimplifiedResponse
+import com.igorivkin.website.controller.dto.article.ArticleUpdateRequest
+import com.igorivkin.website.exception.EntityDoesNotExistException
 import com.igorivkin.website.persistence.repository.ArticleRepository
-import com.igorivkin.website.persistence.specification.ArticleSpecification
-import org.hibernate.Hibernate
-import org.springframework.beans.factory.annotation.Autowired
+import com.igorivkin.website.service.mapper.ArticleMapper
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
-import javax.transaction.Transactional
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class ArticleServiceImpl(
-    private val articleRepository: ArticleRepository
-) : BaseServiceImpl<Article, Long>(
-    articleRepository,
-    Article::class.java
-), ArticleService {
-
-    @Autowired
-    private lateinit var articleService: ArticleService
+    private val articleRepository: ArticleRepository,
+    private val articleMapper: ArticleMapper
+) : ArticleService {
 
     @Transactional
-    override fun findAll(pageable: Pageable, withTopics: Boolean): Page<Article> {
-        val page = this.findAll(pageable)
-        if (withTopics) {
-            page.toList().forEach {
-                Hibernate.initialize(it.topics)
-            }
-        }
-        return page
+    override fun findById(id: Long): ArticleGetResponse {
+        val article = articleRepository.findById(id)
+            .orElseThrow { EntityDoesNotExistException.ofArticleId(id) }
+        return articleMapper.toDto(article)
     }
 
     @Transactional
-    override fun findById(id: Long, withTopics: Boolean): Article {
-        val article = this.findById(id)
-        if (withTopics) {
-            Hibernate.initialize(article.topics)
-        }
-        return article
+    override fun findByTitle(title: String): List<ArticleGetSimplifiedResponse> {
+        return articleMapper.toSimplifiedDto(
+            articleRepository.findAllByTitleContainingIgnoreCase(title)
+        )
     }
 
-    override fun findByTitle(title: String): List<Article> {
-        return articleRepository.findAll(ArticleSpecification.titleContains(title))
+    @Transactional
+    override fun findAll(pageable: Pageable): Page<ArticleGetResponse> {
+        val page = articleRepository.findAll(pageable)
+        return PageImpl(
+            articleMapper.toDto(page.toList()),
+            pageable,
+            page.totalElements
+        )
     }
 
-    override fun loadForUpdateById(id: Long): Article {
-        return articleService.findById(id, withTopics = true)
+    @Transactional
+    override fun create(request: ArticleCreateRequest): IdValue<Long> {
+        val articleId = articleRepository.save(articleMapper.toModel(request)).id
+        if (articleId != null) {
+            return IdValue(id = articleId)
+        } else {
+            throw IllegalStateException("Cannot create request, ID was not set")
+        }
     }
 
-    override fun mapBeforeUpdate(updateTo: Article, updateFrom: Article): Article {
-        if (updateFrom.createdAt == null) {
-            updateFrom.createdAt = updateTo.createdAt
+    @Transactional
+    override fun update(id: Long, request: ArticleUpdateRequest): IdValue<Long>  {
+        val article = articleRepository.findById(id)
+            .orElseThrow { EntityDoesNotExistException.ofArticleId(id) }
+
+        articleMapper.update(request, article)
+        val articleId = articleRepository.save(article).id
+        if (articleId != null) {
+            return IdValue(id = articleId)
+        } else {
+            throw IllegalStateException("Cannot update request, cannot retrieve ID")
         }
-        if (updateFrom.author == null) {
-            updateFrom.author = updateTo.author
-        }
-        return updateFrom
     }
 }

@@ -1,8 +1,7 @@
 package com.igorivkin.website.controller.admin
 
-import com.igorivkin.website.dto.ArticleDto
-import com.igorivkin.website.service.mapper.ArticleMapper
-import com.igorivkin.website.persistence.entity.Article
+import com.igorivkin.website.controller.dto.article.ArticleCreateRequest
+import com.igorivkin.website.controller.dto.article.ArticleUpdateRequest
 import com.igorivkin.website.response.BasicResponse
 import com.igorivkin.website.response.StatusCode
 import com.igorivkin.website.response.SuccessfullyModifiedResponse
@@ -10,16 +9,14 @@ import com.igorivkin.website.service.ArticleService
 import com.igorivkin.website.view.HtmlBasicView
 import com.igorivkin.website.view.HtmlView
 import org.slf4j.LoggerFactory
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
-import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
-import java.lang.IllegalArgumentException
+import javax.validation.Valid
 
 @Controller
 class AdminArticlesController(
@@ -34,8 +31,9 @@ class AdminArticlesController(
         model: Model,
         @PathVariable(required = false) pageNumber: Int?
     ): String {
-        val page: Page<Article> = articleService.findAll(pageable = producePageableFromPageNumber(pageNumber))
-        model.addAttribute("articles", ArticleMapper.toListOfDto(page.toList()))
+        val page = articleService.findAll(pageable = producePageableFromPageNumber(pageNumber))
+
+        model.addAttribute("articles", page.toList())
         model.addAttribute("pageCount", page.totalPages)
         val view = HtmlBasicView(model)
         return renderAdminArticlePage(
@@ -62,13 +60,7 @@ class AdminArticlesController(
         model: Model,
         @PathVariable articleId: Long
     ): String {
-        model.addAttribute(
-            "article",
-            ArticleMapper.toDto(
-                articleService.findById(id = articleId, withTopics = true),
-                withTopics = true
-            )
-        )
+        model.addAttribute("article", articleService.findById(articleId))
         val view = HtmlBasicView(model)
         return renderAdminArticlePage(
             view
@@ -87,17 +79,12 @@ class AdminArticlesController(
     )
     fun add(
         model: Model,
-        @RequestBody articleDto: ArticleDto
+        @RequestBody @Valid request: ArticleCreateRequest
     ): ResponseEntity<BasicResponse> {
-        log.info("Received new article: {}", articleDto)
-        val createdArticle: Article = articleService.create(ArticleMapper.toModel(articleDto, withTopics = true))
-        val createdArticleId = createdArticle.id
-        log.info("Created new article: {}", createdArticle)
-        return if (createdArticleId != null) {
-            successfullyCreatedArticleResponse(createdArticleId)
-        } else {
-            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        log.info("Received new article: {}", request)
+        val createdArticleId = articleService.create(request).id
+        log.info("Created new article: {}", createdArticleId)
+        return successfullyCreatedArticleResponse(createdArticleId)
     }
 
 
@@ -109,20 +96,13 @@ class AdminArticlesController(
     )
     fun edit(
         model: Model,
-        @RequestBody articleDto: ArticleDto
+        @RequestBody request: ArticleUpdateRequest
     ): ResponseEntity<BasicResponse> {
-        log.info("Received new article: {}", articleDto)
-        val articleId = articleDto.id
-        if (articleId == null) {
-            throw IllegalArgumentException("Cannot update article, empty ID is provided")
-        } else {
-            val updatedArticle: Article = articleService.update(
-                articleId,
-                ArticleMapper.toModel(articleDto, withTopics = true)
-            )
-            log.info("Updated an article: {}", updatedArticle)
-            return successfullyUpdatedArticleResponse(articleId)
-        }
+        log.info("Received new article: {}", request)
+        val articleId = request.id
+        val updatedArticle = articleService.update(articleId, request)
+        log.info("Updated an article: {}", updatedArticle)
+        return successfullyUpdatedArticleResponse(articleId)
     }
 
     private fun renderAdminArticlePage(view: HtmlView): String {

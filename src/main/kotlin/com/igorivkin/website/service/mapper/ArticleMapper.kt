@@ -1,37 +1,63 @@
 package com.igorivkin.website.service.mapper
 
-import com.igorivkin.website.converter.ArticleConverter
-import com.igorivkin.website.converter.ArticleConverterWithTopics
-import com.igorivkin.website.dto.ArticleDto
+import com.igorivkin.website.controller.dto.IdValue
+import com.igorivkin.website.controller.dto.article.ArticleCreateRequest
+import com.igorivkin.website.controller.dto.article.ArticleGetResponse
+import com.igorivkin.website.controller.dto.article.ArticleGetSimplifiedResponse
+import com.igorivkin.website.controller.dto.article.ArticleUpdateRequest
 import com.igorivkin.website.persistence.entity.Article
-import org.mapstruct.factory.Mappers
+import com.igorivkin.website.persistence.entity.Topic
+import org.mapstruct.Mapper
+import org.mapstruct.Mapping
+import org.mapstruct.MappingTarget
+import org.mapstruct.Mappings
 
-class ArticleMapper {
-    companion object {
-        private val converter: ArticleConverter = Mappers.getMapper(ArticleConverter::class.java)
-        private val converterWithTopics: ArticleConverterWithTopics = Mappers.getMapper(ArticleConverterWithTopics::class.java)
+@Mapper(
+    componentModel = "spring",
+    uses = [UserMapper::class, TopicMapper::class]
+)
+interface ArticleMapper {
+    @Mappings(
+        Mapping(source = "id", target = "id"),
+        Mapping(source = "title", target = "title"),
+        Mapping(source = "content", target = "content"),
+        Mapping(source = "author", target = "author"),
+        Mapping(source = "topics", target = "topics")
+    )
+    fun toDto(article: Article): ArticleGetResponse
 
-        fun toDto(article: Article, withTopics: Boolean = false): ArticleDto {
-            return if (withTopics) {
-                converterWithTopics.toDto(article)
-            } else {
-                converter.toDto(article)
-            }
-        }
+    fun toDto(articles: List<Article>): List<ArticleGetResponse>
 
-        fun toListOfDto(articles: List<Article>): List<ArticleDto> {
-            return articles.map {
-                converter.toDto(it)
-            }.toList();
-        }
+    @Mappings(
+        Mapping(source = "id", target = "id"),
+        Mapping(source = "title", target = "title")
+    )
+    fun toSimplifiedDto(article: Article): ArticleGetSimplifiedResponse
 
-        fun toModel(topicDto: ArticleDto, withTopics: Boolean = false): Article {
-            return if (withTopics) {
-                converterWithTopics.toModel(topicDto)
-            } else {
-                converter.toModel(topicDto)
-            }
-        }
+    fun toSimplifiedDto(articles: List<Article>): List<ArticleGetSimplifiedResponse>
 
-    }
+    @Mappings(
+        Mapping(source = "title", target = "title"),
+        Mapping(source = "content", target = "content"),
+        Mapping(source = "author.id", target = "author.id"),
+        Mapping(source = "topics", target = "topics")
+    )
+    fun toModel(request: ArticleCreateRequest): Article
+
+    @Mappings(
+        Mapping(target = "id", ignore = true),
+        Mapping(source = "title", target = "title"),
+        Mapping(source = "content", target = "content"),
+        Mapping(source = "author.id", target = "author.id"),
+        Mapping(source = "topics", target = "topics")
+    )
+    fun update(request: ArticleUpdateRequest, @MappingTarget article: Article)
+
+    @Mappings(
+        Mapping(source = "id", target = "id")
+    )
+    fun idValueToTopic(idValue: IdValue<Long>): Topic
+
+    fun idValueToTopic(idValues: List<IdValue<Long>>): List<Topic>
+
 }

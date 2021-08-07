@@ -2,7 +2,6 @@ package com.igorivkin.website.controller.admin
 
 import com.igorivkin.website.controller.dto.topic.TopicCreateRequest
 import com.igorivkin.website.controller.dto.topic.TopicUpdateRequest
-import com.igorivkin.website.dto.TopicDto
 import com.igorivkin.website.service.TopicService
 import com.igorivkin.website.view.HtmlBasicView
 import org.springframework.http.MediaType
