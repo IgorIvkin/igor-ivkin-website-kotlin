@@ -1,7 +1,15 @@
 package com.igorivkin.website.service
 
-import com.igorivkin.website.model.Topic
+import com.igorivkin.website.controller.dto.topic.TopicCreateRequest
+import com.igorivkin.website.controller.dto.topic.TopicGetResponse
+import com.igorivkin.website.controller.dto.topic.TopicUpdateRequest
 
-interface TopicService : BaseService<Topic, Long> {
-    fun findByTitle(title: String): List<Topic>
+interface TopicService {
+    fun findById(id: Long): TopicGetResponse
+    fun findAll(): List<TopicGetResponse>
+    fun findByTitle(title: String): List<TopicGetResponse>
+
+    fun create(request: TopicCreateRequest): TopicGetResponse
+    fun update(id: Long, request: TopicUpdateRequest): TopicGetResponse
+
 }

@@ -2,7 +2,7 @@ package com.igorivkin.website.controller.admin
 
 import com.igorivkin.website.dto.ArticleDto
 import com.igorivkin.website.service.mapper.ArticleMapper
-import com.igorivkin.website.model.Article
+import com.igorivkin.website.persistence.entity.Article
 import com.igorivkin.website.response.BasicResponse
 import com.igorivkin.website.response.StatusCode
 import com.igorivkin.website.response.SuccessfullyModifiedResponse

@@ -1,16 +1,17 @@
-package com.igorivkin.website.repository.specification
+package com.igorivkin.website.persistence.specification
 
-import com.igorivkin.website.model.Article
+import com.igorivkin.website.persistence.entity.Article
 import org.springframework.data.jpa.domain.Specification
+import java.util.*
 
-class ArticleSpecifications {
+class ArticleSpecification {
 
     companion object {
         fun titleContains(title: String): Specification<Article?> {
             return Specification<Article?> { root, query, cb ->
                 cb.like(
                     cb.lower(root.get("title")),
-                    "%" + title.toLowerCase() + "%"
+                    "%" + title.lowercase(Locale.getDefault()) + "%"
                 )
             }
         }

@@ -1,6 +1,6 @@
-package com.igorivkin.website.model.course
+package com.igorivkin.website.persistence.entity.course
 
-import com.igorivkin.website.model.BaseModel
+import com.igorivkin.website.persistence.entity.BaseModel
 import com.vladmihalcea.hibernate.type.array.IntArrayType
 import com.vladmihalcea.hibernate.type.array.StringArrayType
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType
@@ -12,7 +12,6 @@ import org.hibernate.annotations.TypeDef
 import org.hibernate.annotations.TypeDefs
 import org.hibernate.validator.constraints.Length
 import javax.persistence.Column
-import javax.persistence.Entity
 import javax.validation.constraints.NotNull
 
 //@Entity(name = "courses")

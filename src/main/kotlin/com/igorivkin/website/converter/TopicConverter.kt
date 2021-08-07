@@ -1,7 +1,7 @@
 package com.igorivkin.website.converter
 
 import com.igorivkin.website.dto.TopicDto
-import com.igorivkin.website.model.Topic
+import com.igorivkin.website.persistence.entity.Topic
 import org.mapstruct.Mapper
 
 @Mapper

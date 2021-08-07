@@ -26,7 +26,7 @@ class ArticleController(
         model.addAttribute("article", article)
         val view = HtmlBasicView(model)
         return view
-            .setTitle("Содержимое статьи")
+            .setTitle(article.title + " — Статья на сайте igorivkin.com")
             .setMainTemplate("main-template")
             .setContent("articles/main-page :: content")
             .render()

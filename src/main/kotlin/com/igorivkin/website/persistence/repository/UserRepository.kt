@@ -1,6 +1,6 @@
-package com.igorivkin.website.repository
+package com.igorivkin.website.persistence.repository
 
-import com.igorivkin.website.model.User
+import com.igorivkin.website.persistence.entity.User
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 

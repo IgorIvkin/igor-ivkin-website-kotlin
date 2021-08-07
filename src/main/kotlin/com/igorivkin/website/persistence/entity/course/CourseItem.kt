@@ -1,4 +1,4 @@
-package com.igorivkin.website.model.course
+package com.igorivkin.website.persistence.entity.course
 
 import java.io.Serializable
 

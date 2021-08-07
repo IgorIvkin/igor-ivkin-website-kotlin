@@ -1,26 +1,30 @@
 package com.igorivkin.website.service.mapper
 
-import com.igorivkin.website.converter.TopicConverter
-import com.igorivkin.website.dto.TopicDto
-import com.igorivkin.website.model.Topic
-import org.mapstruct.factory.Mappers
+import com.igorivkin.website.controller.dto.topic.TopicCreateRequest
+import com.igorivkin.website.controller.dto.topic.TopicGetResponse
+import com.igorivkin.website.controller.dto.topic.TopicUpdateRequest
+import com.igorivkin.website.persistence.entity.Topic
+import org.mapstruct.Mapper
+import org.mapstruct.Mapping
+import org.mapstruct.MappingTarget
+import org.mapstruct.Mappings
 
-class TopicMapper {
-    companion object {
-        private val converter: TopicConverter = Mappers.getMapper(TopicConverter::class.java)
+@Mapper(componentModel = "spring")
+interface TopicMapper {
+    @Mappings(
+        Mapping(source = "id", target = "id"),
+        Mapping(source = "title", target = "title")
+    )
+    fun toDto(topic: Topic): TopicGetResponse
+    fun toDto(topics: List<Topic>): List<TopicGetResponse>
 
-        fun toDto(topic: Topic): TopicDto {
-            return converter.toDto(topic)
-        }
+    @Mappings(
+        Mapping(source = "title", target = "title")
+    )
+    fun toModel(topic: TopicCreateRequest): Topic
 
-        fun toListOfDto(topics: List<Topic>): List<TopicDto> {
-            return topics.map {
-                converter.toDto(it)
-            }.toList();
-        }
-
-        fun toModel(topicDto: TopicDto): Topic {
-            return converter.toModel(topicDto)
-        }
-    }
+    @Mappings(
+        Mapping(source = "title", target = "title")
+    )
+    fun update(request: TopicUpdateRequest, @MappingTarget topic: Topic)
 }

@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 
-import com.igorivkin.website.security.UserDetailsServiceImpl
+import com.igorivkin.website.config.security.UserDetailsServiceImpl
 
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.config.annotation.web.builders.HttpSecurity

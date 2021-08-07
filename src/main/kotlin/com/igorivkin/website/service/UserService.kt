@@ -1,7 +1,8 @@
 package com.igorivkin.website.service
 
-import com.igorivkin.website.model.User
+import com.igorivkin.website.persistence.entity.User
 
-interface UserService : BaseService<User, Long> {
+interface UserService {
+    fun findById(id: Long): User?
     fun findByUsername(username: String): User?
 }

@@ -1,6 +1,6 @@
 package com.igorivkin.website.service
 
-import com.igorivkin.website.model.Article
+import com.igorivkin.website.persistence.entity.Article
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 

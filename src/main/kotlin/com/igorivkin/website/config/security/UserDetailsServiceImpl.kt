@@ -1,6 +1,6 @@
-package com.igorivkin.website.security
+package com.igorivkin.website.config.security
 
-import com.igorivkin.website.model.User
+import com.igorivkin.website.persistence.entity.User
 import com.igorivkin.website.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.userdetails.UserDetails

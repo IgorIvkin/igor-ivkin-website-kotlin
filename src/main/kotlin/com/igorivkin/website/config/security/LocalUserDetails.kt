@@ -1,6 +1,6 @@
-package com.igorivkin.website.security
+package com.igorivkin.website.config.security
 
-import com.igorivkin.website.model.User
+import com.igorivkin.website.persistence.entity.User
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails

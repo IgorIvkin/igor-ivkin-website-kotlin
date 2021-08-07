@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: igor-ivkin-website
+  datasource:
+    url: jdbc:postgresql://localhost:5432/igorivkindb
+    username: igor
+    password: databaseigor55
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    open-in-view: false
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+  liquibase:
+    change-log: db/db.changelog-master.xml
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+        type:
+          descriptor:
+            sql: trace

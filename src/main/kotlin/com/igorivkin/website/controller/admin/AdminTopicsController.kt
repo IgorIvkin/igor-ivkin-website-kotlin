@@ -1,7 +1,8 @@
 package com.igorivkin.website.controller.admin
 
+import com.igorivkin.website.controller.dto.topic.TopicCreateRequest
+import com.igorivkin.website.controller.dto.topic.TopicUpdateRequest
 import com.igorivkin.website.dto.TopicDto
-import com.igorivkin.website.service.mapper.TopicMapper
 import com.igorivkin.website.service.TopicService
 import com.igorivkin.website.view.HtmlBasicView
 import org.springframework.http.MediaType
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
+import javax.validation.Valid
 
 @Controller
 class AdminTopicsController(
@@ -41,8 +43,8 @@ class AdminTopicsController(
         method = [RequestMethod.POST],
         consumes = [MediaType.APPLICATION_FORM_URLENCODED_VALUE]
     )
-    fun add(topicDto: TopicDto): String {
-        topicService.create(TopicMapper.toModel(topicDto))
+    fun add(@Valid request: TopicCreateRequest): String {
+        topicService.create(request)
         return "redirect:/admin/topics/"
     }
 
@@ -69,9 +71,9 @@ class AdminTopicsController(
     fun edit(
         redirectAttributes: RedirectAttributes,
         @RequestParam("id") topicId: Long,
-        topicDto: TopicDto
+        @Valid request: TopicUpdateRequest
     ): String {
-        topicService.update(topicId, TopicMapper.toModel(topicDto))
+        topicService.update(topicId, request)
         redirectAttributes.addFlashAttribute("updateStatus", "success")
         return "redirect:/admin/topics/edit/${topicId}/"
     }

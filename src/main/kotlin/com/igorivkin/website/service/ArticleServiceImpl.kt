@@ -1,8 +1,8 @@
 package com.igorivkin.website.service
 
-import com.igorivkin.website.model.Article
-import com.igorivkin.website.repository.ArticleRepository
-import com.igorivkin.website.repository.specification.ArticleSpecifications
+import com.igorivkin.website.persistence.entity.Article
+import com.igorivkin.website.persistence.repository.ArticleRepository
+import com.igorivkin.website.persistence.specification.ArticleSpecification
 import org.hibernate.Hibernate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
@@ -42,7 +42,7 @@ class ArticleServiceImpl(
     }
 
     override fun findByTitle(title: String): List<Article> {
-        return articleRepository.findAll(ArticleSpecifications.titleContains(title))
+        return articleRepository.findAll(ArticleSpecification.titleContains(title))
     }
 
     override fun loadForUpdateById(id: Long): Article {

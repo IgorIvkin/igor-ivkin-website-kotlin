@@ -1,10 +1,5 @@
 package com.igorivkin.website.service
 
-import com.igorivkin.website.dto.UserDto
-import com.igorivkin.website.model.User
-import com.igorivkin.website.model.UserRole
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.Assertions.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional

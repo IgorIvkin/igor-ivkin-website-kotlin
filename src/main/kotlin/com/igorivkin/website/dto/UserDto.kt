@@ -1,8 +1,7 @@
 package com.igorivkin.website.dto
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.igorivkin.website.model.User
-import com.igorivkin.website.model.UserRole
+import com.igorivkin.website.persistence.entity.UserRole
 import java.time.Instant
 
 data class UserDto (

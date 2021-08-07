@@ -1,4 +1,4 @@
-package com.igorivkin.website.model
+package com.igorivkin.website.persistence.entity
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import org.hibernate.annotations.CreationTimestamp
@@ -6,6 +6,7 @@ import org.hibernate.annotations.UpdateTimestamp
 import org.hibernate.validator.constraints.Length
 import java.time.Instant
 import javax.persistence.*
+import javax.validation.constraints.Email
 import javax.validation.constraints.NotNull
 
 @Entity(name = "users")
@@ -25,8 +26,10 @@ class User(
     @Length(min = 1, max = 255)
     var title: String?,
 
+    @Email
     var email: String? = null,
-    var idOauth: String? = null,
+
+    var oauthId: String? = null,
 
     @CreationTimestamp
     var createdAt: Instant? = null,
@@ -39,7 +42,11 @@ class User(
     @Enumerated(EnumType.ORDINAL)
     var role: UserRole?,
 
-    @OneToMany(mappedBy = "author", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @OneToMany(
+        mappedBy = "author",
+        cascade = [CascadeType.ALL],
+        fetch = FetchType.LAZY
+    )
     var articles: List<Article>? = mutableListOf<Article>()
 
 ): BaseModel<Long>()

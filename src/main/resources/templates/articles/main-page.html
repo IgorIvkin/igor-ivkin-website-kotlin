@@ -3,6 +3,9 @@
 <body>
 <div th:fragment="content">
   <h1 th:text="${article.title}">Заголовок статьи</h1>
+  <div class="update">
+    <span class="datetime" th:text="${#temporals.format(article.updatedAt, 'dd.MM.yyyy в HH:mm')}"></span>
+  </div>
   <div class="topics">
     <div class="item" th:each="topic: ${article.topics}">
       <a href="#" th:text="${topic.title}"></a>

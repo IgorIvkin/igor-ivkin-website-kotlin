@@ -2,13 +2,13 @@ package com.igorivkin.website.service
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.mock.mockito.SpyBean
 
-@SpringBootTest
+@SpringBootTest(classes = [MarkdownParserServiceImpl::class])
 class MarkdownParserServiceTests {
 
-    @Autowired
+    @SpyBean
     private lateinit var markdownParserService: MarkdownParserService
 
     @Test

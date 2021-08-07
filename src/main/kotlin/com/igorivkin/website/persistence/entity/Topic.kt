@@ -1,4 +1,4 @@
-package com.igorivkin.website.model
+package com.igorivkin.website.persistence.entity
 
 import org.hibernate.validator.constraints.Length
 import javax.persistence.*

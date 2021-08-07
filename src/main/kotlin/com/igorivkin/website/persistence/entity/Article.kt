@@ -1,6 +1,8 @@
-package com.igorivkin.website.model
+package com.igorivkin.website.persistence.entity
 
 import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.Fetch
+import org.hibernate.annotations.FetchMode
 import org.hibernate.annotations.UpdateTimestamp
 import org.hibernate.validator.constraints.Length
 import java.time.Instant
@@ -17,10 +19,12 @@ class Article(
     var title: String?,
 
     @NotNull
+    @Column(name = "content", columnDefinition = "text")
     var content: String?,
 
-    @ManyToOne(cascade = [CascadeType.REFRESH], fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_author", referencedColumnName = "id")
+    @ManyToOne
+    @Fetch(FetchMode.JOIN)
+    @JoinColumn(name = "author_id", referencedColumnName = "id")
     var author: User?,
 
     @CreationTimestamp
@@ -29,7 +33,10 @@ class Article(
     @UpdateTimestamp
     var updatedAt: Instant?,
 
-    @ManyToMany(cascade = [CascadeType.REFRESH, CascadeType.REMOVE], fetch = FetchType.LAZY)
+    @ManyToMany(
+        cascade = [CascadeType.REFRESH, CascadeType.REMOVE],
+        fetch = FetchType.LAZY
+    )
     @JoinTable(
         name = "articles_topics",
         joinColumns = [JoinColumn(name = "id_article", referencedColumnName = "id")],

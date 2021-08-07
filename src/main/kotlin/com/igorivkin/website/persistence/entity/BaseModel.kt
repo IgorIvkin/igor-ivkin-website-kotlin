@@ -1,4 +1,4 @@
-package com.igorivkin.website.model
+package com.igorivkin.website.persistence.entity
 
 import org.springframework.data.util.ProxyUtils
 import java.io.Serializable

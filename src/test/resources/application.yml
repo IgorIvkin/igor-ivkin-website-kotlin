@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: igor-ivkin-website
+  datasource:
+    url: jdbc:h2:mem:test_database;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    username: igor
+    password: databaseigor55
+    driver-class-name: org.h2.Driver
+  jpa:
+    open-in-view: false
+    show-sql: true
+    database-platform: org.hibernate.dialect.H2Dialect
+  liquibase:
+    change-log: db/db.changelog-master.xml
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+        type:
+          descriptor:
+            sql: trace

@@ -3,7 +3,7 @@ package com.igorivkin.website.service.mapper
 import com.igorivkin.website.converter.ArticleConverter
 import com.igorivkin.website.converter.ArticleConverterWithTopics
 import com.igorivkin.website.dto.ArticleDto
-import com.igorivkin.website.model.Article
+import com.igorivkin.website.persistence.entity.Article
 import org.mapstruct.factory.Mappers
 
 class ArticleMapper {
