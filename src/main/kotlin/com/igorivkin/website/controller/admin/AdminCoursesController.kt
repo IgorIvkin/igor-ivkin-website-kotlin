@@ -35,17 +35,27 @@ class AdminCoursesController(
         );
     }
 
+    @GetMapping("/admin/courses/add")
+    fun renderAddPage(model: Model): String {
+        val view = HtmlBasicView(model)
+        return renderAdminCoursePage(
+            view
+                .setTitle("Администраторский интерфейс - Добавить курс")
+                .setMainTemplate("admin/main-template")
+                .setContent("admin/courses/add-page :: content")
+        );
+    }
+
     @RequestMapping(
         value = ["/admin/courses/do-add/"],
         method = [RequestMethod.POST],
-        consumes = [MediaType.APPLICATION_JSON_VALUE],
-        produces = [MediaType.APPLICATION_JSON_VALUE]
+        consumes = [MediaType.APPLICATION_FORM_URLENCODED_VALUE]
     )
-    fun create(@RequestBody @Valid request: CourseCreateRequest): ResponseEntity<BasicResponse> {
+    fun create(@Valid request: CourseCreateRequest): String {
         log.info("Create new course: {}", request)
         val courseId = courseService.create(request).id
         log.info("Created new course: {}", courseId)
-        return successfullyCreatedCourseResponse(courseId)
+        return "redirect:/admin/courses/"
     }
 
     @GetMapping("/admin/courses/edit/{courseId}")
@@ -56,6 +66,7 @@ class AdminCoursesController(
             view
                 .setTitle("Администраторский интерфейс - Изменить курс")
                 .setMainTemplate("admin/main-template")
+                .setJavascriptData("admin/courses/edit-page :: javascript-data")
                 .setContent("admin/courses/edit-page :: content")
         );
     }
@@ -77,6 +88,7 @@ class AdminCoursesController(
     private fun renderAdminCoursePage(view: HtmlView): String {
         return view
             .addJs("/js/components/article-autocomplete.js")
+            .addJs("/js/infrastructure/admin/course.js")
             .render()
     }
 

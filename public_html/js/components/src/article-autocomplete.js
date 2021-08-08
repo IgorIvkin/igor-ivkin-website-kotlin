@@ -44,15 +44,33 @@ class ArticleAutocomplete extends React.Component {
         this.setState({
             foundArticles: []
         });
-        let articleId = event.target.getAttribute("data-article-id");
+        let articleId = parseInt(event.target.getAttribute("data-article-id"));
         let articleTitle = event.target.getAttribute("data-article-title");
         let currentSetArticles = this.state.articles;
-        if (!currentSetArticles.map((article) => article.id).includes(articleId)) {
-            currentSetArticles.push({id: articleId, title: articleTitle});
+        if (!currentSetArticles.map((article) => article.articleId).includes(articleId)) {
+            currentSetArticles.push({articleId: articleId, articleTitle: articleTitle});
             this.setState({
                 articles: currentSetArticles
             });
             this.autocompleteInput.current.value = "";
+        }
+    }
+
+    deleteArticleFromCourse(event) {
+        let articleId = event.target.getAttribute("data-article-id");
+        let currentArticles = this.state.articles;
+        this.setState({
+            articles: currentArticles.filter(article => article.articleId.toString() !== articleId.toString())
+        });
+    }
+
+    sortArticles(me, other) {
+        if (me.order > other.order) {
+            return 1;
+        } else if (me.order < other.order) {
+            return -1;
+        } else {
+            return 0;
         }
     }
 
@@ -85,10 +103,16 @@ class ArticleAutocomplete extends React.Component {
                 }
                 {this.state.articles.length > 0 &&
                 <div className={"course-articles"}>
-                    {this.state.articles.map(article => {
+                    {this.state.articles
+                        .sort(this.sortArticles)
+                        .map((article, index) => {
                         return (
-                            <div key={article.id} data-article-id={article.id} className={"item"}>
-                                <span className={"article-title"}>{article.title}</span>
+                            <div key={article.articleId} data-article-id={article.articleId} className={"item"}>
+                                {index + 1}. <span className={"article-title"}>{article.articleTitle}</span>
+                                <span
+                                    onClick={(event) => this.deleteArticleFromCourse(event)}
+                                    data-article-id={article.articleId}
+                                    className={"set-article-delete"}>✕</span>
                             </div>
                         );
                     })}
@@ -102,6 +126,6 @@ class ArticleAutocomplete extends React.Component {
 document.addEventListener("DOMContentLoaded", function (event) {
     const domContainer = document.querySelector('#article-initialization-block');
     if (domContainer) {
-        ReactDOM.render(React.createElement(ArticleAutocomplete, {articles: window.courseArticles}, null), domContainer);
+        ReactDOM.render(React.createElement(ArticleAutocomplete, {articles: window.setArticles}, null), domContainer);
     }
 });

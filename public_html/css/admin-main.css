@@ -326,6 +326,24 @@ header .welcome {
     color: #909090;
 }
 
+.container .content .course-articles {
+    margin:         20px 0;
+}
+
+.container .content .course-articles .item {
+    padding:        20px 10px;
+    border-bottom:  1px solid #dcdcdc;
+}
+
+.container .content .course-articles .item .set-article-delete {
+    margin: 0 0 0 5px;
+    cursor: pointer;
+}
+
+.container .content .course-articles .item .set-article-delete:hover {
+    color: #909090;
+}
+
 @media screen and (max-width: 790px) {
     header {
         padding:        0;
