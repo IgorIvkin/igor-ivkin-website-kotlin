@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<body>
+<div th:fragment="content">
+    <h1>Изменить курс</h1>
+
+    <div class="breadcrumbs">
+        <div class="item"><a href="/admin/courses/">Курсы</a></div>
+        <div class="divider">/</div>
+        <div class="item">Изменить курс</div>
+    </div>
+
+    <form class="basic-form" id="course-edit-form" method="post">
+        <input type="hidden" name="id" th:value="${course.id}">
+
+        <div class="section">
+            <label for="title">Название курса</label><br/>
+            <input type="text"
+                   id="title"
+                   name="title"
+                   required="required"
+                   maxlength="255"
+                   autocomplete="off" th:value="${course.title}">
+        </div>
+
+        <!--
+        <div class="section">
+            <label for="description">Краткое описание курса</label><br />
+            <textarea id="description" name="description" required="required"></textarea>
+        </div>
+        -->
+
+        <div class="section section-relative" id="article-initialization-block">
+            <label for="articles">Статьи (начните набирать название статьи, чтобы добавить её в курс)</label><br/>
+            <input type="text" id="articles" name="articles">
+        </div>
+
+        <div class="section">
+            <span class="button-item">
+                <button class="button button-add">Добавить</button>
+            </span>
+        </div>
+    </form>
+</div>
+</body>
+</html>

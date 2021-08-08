@@ -3,24 +3,21 @@ package com.igorivkin.website.persistence.entity
 import org.hibernate.validator.constraints.Length
 import javax.persistence.CascadeType
 import javax.persistence.Entity
-import javax.persistence.FetchType
-import javax.persistence.ManyToMany
+import javax.persistence.OneToMany
 import javax.validation.constraints.NotNull
 
-@Entity(name = "topics")
-class Topic(
-
-    // id field taken from BaseModel-entity here
+@Entity(name = "courses")
+class Course(
 
     @NotNull
     @Length(min = 1, max = 255)
     var title: String?,
 
-    @ManyToMany(
-        mappedBy = "topics",
+    @OneToMany(
+        mappedBy = "course",
         cascade = [CascadeType.ALL],
-        fetch = FetchType.LAZY
+        orphanRemoval = true
     )
-    var articles: List<Article>? = mutableListOf<Article>()
+    var articles: List<CourseArticle>? = mutableListOf<CourseArticle>()
 
 ): BaseModel<Long>()

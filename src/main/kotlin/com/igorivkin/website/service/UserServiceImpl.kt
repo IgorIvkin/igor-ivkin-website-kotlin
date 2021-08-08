@@ -5,6 +5,7 @@ import com.igorivkin.website.persistence.entity.User
 import com.igorivkin.website.persistence.repository.UserRepository
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class UserServiceImpl (
@@ -12,11 +13,13 @@ class UserServiceImpl (
     private val passwordEncoder: PasswordEncoder
 ): UserService {
 
+    @Transactional
     override fun findById(id: Long): User? {
         return userRepository.findById(id)
             .orElseThrow { EntityDoesNotExistException.ofUserId(id) }
     }
 
+    @Transactional
     override fun findByUsername(username: String): User? {
         return userRepository.findByUsername(username)
     }

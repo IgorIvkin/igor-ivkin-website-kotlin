@@ -7,10 +7,7 @@ import com.igorivkin.website.controller.dto.article.ArticleGetSimplifiedResponse
 import com.igorivkin.website.controller.dto.article.ArticleUpdateRequest
 import com.igorivkin.website.persistence.entity.Article
 import com.igorivkin.website.persistence.entity.Topic
-import org.mapstruct.Mapper
-import org.mapstruct.Mapping
-import org.mapstruct.MappingTarget
-import org.mapstruct.Mappings
+import org.mapstruct.*
 
 @Mapper(
     componentModel = "spring",
@@ -37,15 +34,20 @@ interface ArticleMapper {
     fun toSimplifiedDto(articles: List<Article>): List<ArticleGetSimplifiedResponse>
 
     @Mappings(
+        Mapping(target = "id", ignore = true),
+        Mapping(target = "updatedAt", ignore = true),
+        Mapping(target = "createdAt", ignore = true),
         Mapping(source = "title", target = "title"),
         Mapping(source = "content", target = "content"),
         Mapping(source = "author.id", target = "author.id"),
-        Mapping(source = "topics", target = "topics")
+        Mapping(source = "topics", target = "topics"),
     )
     fun toModel(request: ArticleCreateRequest): Article
 
     @Mappings(
         Mapping(target = "id", ignore = true),
+        Mapping(target = "updatedAt", ignore = true),
+        Mapping(target = "createdAt", ignore = true),
         Mapping(source = "title", target = "title"),
         Mapping(source = "content", target = "content"),
         Mapping(source = "author.id", target = "author.id"),
@@ -54,6 +56,8 @@ interface ArticleMapper {
     fun update(request: ArticleUpdateRequest, @MappingTarget article: Article)
 
     @Mappings(
+        Mapping(target = "title", ignore = true),
+        Mapping(target = "articles", ignore = true),
         Mapping(source = "id", target = "id")
     )
     fun idValueToTopic(idValue: IdValue<Long>): Topic

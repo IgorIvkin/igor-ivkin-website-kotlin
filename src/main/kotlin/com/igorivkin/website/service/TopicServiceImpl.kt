@@ -15,18 +15,21 @@ class TopicServiceImpl(
     private val topicMapper: TopicMapper
 ): TopicService {
 
+    @Transactional
     override fun findById(id: Long): TopicGetResponse {
         val topic = topicRepository.findById(id)
             .orElseThrow { EntityDoesNotExistException.ofTopicId(id) }
         return topicMapper.toDto(topic)
     }
 
+    @Transactional
     override fun findAll(): List<TopicGetResponse> {
         return topicMapper.toDto(
             topicRepository.findAll()
         )
     }
 
+    @Transactional
     override fun findByTitle(title: String): List<TopicGetResponse> {
         return topicMapper.toDto(
             topicRepository.findByTitleStartingWithIgnoreCase(title)

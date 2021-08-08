@@ -1,6 +1,7 @@
 package com.igorivkin.website.controller.api
 
-import com.igorivkin.website.dto.MarkdownDto
+import com.igorivkin.website.controller.dto.markdown.MarkdownRequest
+import com.igorivkin.website.controller.dto.markdown.MarkdownResponse
 import com.igorivkin.website.service.MarkdownParserService
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -17,8 +18,8 @@ class MarkdownController(
         consumes = [MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
-    fun generateHtmlFromMarkDown(@RequestBody body: MarkdownDto): ResponseEntity<MarkdownDto> {
-        val response = MarkdownDto(content = markdownParserService.parse(body.content))
+    fun generateHtmlFromMarkDown(@RequestBody body: MarkdownRequest): ResponseEntity<MarkdownResponse> {
+        val response = MarkdownResponse(content = markdownParserService.parse(body.content))
         return ResponseEntity.ok(response)
     }
 }

@@ -77,10 +77,7 @@ class AdminArticlesController(
         consumes = [MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
-    fun add(
-        model: Model,
-        @RequestBody @Valid request: ArticleCreateRequest
-    ): ResponseEntity<BasicResponse> {
+    fun add(@RequestBody @Valid request: ArticleCreateRequest): ResponseEntity<BasicResponse> {
         log.info("Received new article: {}", request)
         val createdArticleId = articleService.create(request).id
         log.info("Created new article: {}", createdArticleId)
@@ -94,10 +91,7 @@ class AdminArticlesController(
         consumes = [MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
-    fun edit(
-        model: Model,
-        @RequestBody request: ArticleUpdateRequest
-    ): ResponseEntity<BasicResponse> {
+    fun edit(@RequestBody @Valid request: ArticleUpdateRequest): ResponseEntity<BasicResponse> {
         log.info("Received new article: {}", request)
         val articleId = request.id
         val updatedArticle = articleService.update(articleId, request)
@@ -123,19 +117,13 @@ class AdminArticlesController(
 
     private fun successfullyCreatedArticleResponse(id: Long): ResponseEntity<BasicResponse> {
         return ResponseEntity.ok(
-            SuccessfullyModifiedResponse(
-                id,
-                StatusCode.ENTITY_SUCCESSFULLY_CREATED
-            )
+            SuccessfullyModifiedResponse(id, StatusCode.ENTITY_SUCCESSFULLY_CREATED)
         )
     }
 
     private fun successfullyUpdatedArticleResponse(id: Long): ResponseEntity<BasicResponse> {
         return ResponseEntity.ok(
-            SuccessfullyModifiedResponse(
-                id,
-                StatusCode.ENTITY_SUCCESSFULLY_UPDATED
-            )
+            SuccessfullyModifiedResponse(id, StatusCode.ENTITY_SUCCESSFULLY_UPDATED)
         )
     }
 }

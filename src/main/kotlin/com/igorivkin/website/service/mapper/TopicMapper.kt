@@ -19,11 +19,15 @@ interface TopicMapper {
     fun toDto(topics: List<Topic>): List<TopicGetResponse>
 
     @Mappings(
+        Mapping(target = "id", ignore = true),
+        Mapping(target = "articles", ignore = true),
         Mapping(source = "title", target = "title")
     )
     fun toModel(topic: TopicCreateRequest): Topic
 
     @Mappings(
+        Mapping(target = "id", ignore = true),
+        Mapping(target = "articles", ignore = true),
         Mapping(source = "title", target = "title")
     )
     fun update(request: TopicUpdateRequest, @MappingTarget topic: Topic)
