@@ -35,6 +35,16 @@ class ArticleServiceImpl(
     }
 
     @Transactional
+    override fun findAllByTopicId(topicId: Long, pageable: Pageable): Page<ArticleGetResponse> {
+        val page = articleRepository.findAllByTopicsId(topicId, pageable)
+        return PageImpl(
+            articleMapper.toDto(page.toList()),
+            pageable,
+            page.totalElements
+        )
+    }
+
+    @Transactional
     override fun findAll(pageable: Pageable): Page<ArticleGetResponse> {
         val page = articleRepository.findAll(pageable)
         return PageImpl(

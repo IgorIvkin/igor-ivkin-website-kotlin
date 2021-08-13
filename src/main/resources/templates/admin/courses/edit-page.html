@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ru">
 <body>
+<div th:fragment="javascript-data">
+    <script th:inline="javascript">
+        window.setArticles = /*[[${course.articles}]]*/ {};
+    </script>
+</div>
 <div th:fragment="content">
     <h1>Изменить курс</h1>
 
@@ -10,8 +15,8 @@
         <div class="item">Изменить курс</div>
     </div>
 
-    <form class="basic-form" id="course-edit-form" method="post">
-        <input type="hidden" name="id" th:value="${course.id}">
+    <form class="basic-form" id="course-edit-form" method="post" th:action="@{/admin/courses/do-edit/}">
+        <input type="hidden" id="id" name="id" th:value="${course.id}">
 
         <div class="section">
             <label for="title">Название курса</label><br/>

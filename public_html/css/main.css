@@ -74,6 +74,17 @@ a:hover {color: #f57d00;}
     background-color: #c0cdd9;
 }
 
+.container .content .articles-list .item {
+    display:        flex;
+    align-items:    center;
+    margin:         15px 0 15px 0;
+}
+
+.container .content .articles-list .item .date {
+    font-size:  14px;
+    margin:     0 10px 0 0;
+}
+
 .container .content .topics .item a:link {display: block;padding: 5px 10px;color: #4e7896;text-decoration: none;}
 .container .content .topics .item a:visited {display: block;padding: 5px 10px;color: #4e7896;text-decoration: none;}
 
