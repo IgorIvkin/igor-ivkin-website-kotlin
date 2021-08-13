@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable
 interface ArticleService  {
     fun findById(id: Long): ArticleGetResponse
     fun findByTitle(title: String): List<ArticleGetSimplifiedResponse>
+    fun findAllByTopicId(topicId: Long, pageable: Pageable): Page<ArticleGetResponse>
     fun findAll(pageable: Pageable): Page<ArticleGetResponse>
 
     fun create(request: ArticleCreateRequest): IdValue<Long>
