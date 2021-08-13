@@ -11,6 +11,7 @@ import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 
+const val DEFAULT_PAGE: Int = 0
 const val ARTICLES_PER_PAGE: Int = 10
 
 @Controller
@@ -21,9 +22,7 @@ class ArticleController(
 
     @GetMapping("/articles")
     fun renderMainPage(model: Model): String {
-        val articles = articleService.findAll(
-            PageRequest.of(0, ARTICLES_PER_PAGE, Sort.by("id").descending())
-        )
+        val articles = articleService.findAll(DEFAULT_PAGE, ARTICLES_PER_PAGE)
         model.addAttribute("articles", articles)
         model.addAttribute("totalFound", articles.totalElements)
         model.addAttribute("totalPages", articles.totalPages)

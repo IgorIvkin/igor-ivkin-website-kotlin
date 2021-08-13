@@ -13,6 +13,7 @@ interface ArticleService  {
     fun findByTitle(title: String): List<ArticleGetSimplifiedResponse>
     fun findAllByTopicId(topicId: Long, pageable: Pageable): Page<ArticleGetResponse>
     fun findAll(pageable: Pageable): Page<ArticleGetResponse>
+    fun findAll(pageNum: Int, articlesPerPage: Int): Page<ArticleGetResponse>
 
     fun create(request: ArticleCreateRequest): IdValue<Long>
     fun update(id: Long, request: ArticleUpdateRequest): IdValue<Long>

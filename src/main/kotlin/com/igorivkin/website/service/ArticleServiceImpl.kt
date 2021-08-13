@@ -8,9 +8,7 @@ import com.igorivkin.website.controller.dto.article.ArticleUpdateRequest
 import com.igorivkin.website.exception.EntityDoesNotExistException
 import com.igorivkin.website.persistence.repository.ArticleRepository
 import com.igorivkin.website.service.mapper.ArticleMapper
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageImpl
-import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.*
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -55,6 +53,17 @@ class ArticleServiceImpl(
     }
 
     @Transactional
+    override fun findAll(pageNum: Int, articlesPerPage: Int): Page<ArticleGetResponse> {
+        return findAll(
+            PageRequest.of(
+                pageNum,
+                articlesPerPage,
+                Sort.by("id").descending()
+            )
+        )
+    }
+
+    @Transactional
     override fun create(request: ArticleCreateRequest): IdValue<Long> {
         val articleId = articleRepository.save(articleMapper.toModel(request)).id
         if (articleId != null) {
@@ -65,7 +74,7 @@ class ArticleServiceImpl(
     }
 
     @Transactional
-    override fun update(id: Long, request: ArticleUpdateRequest): IdValue<Long>  {
+    override fun update(id: Long, request: ArticleUpdateRequest): IdValue<Long> {
         val article = articleRepository.findById(id)
             .orElseThrow { EntityDoesNotExistException.ofArticleId(id) }
 
