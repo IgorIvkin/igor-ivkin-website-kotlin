@@ -2,8 +2,24 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ru">
 <body>
 <div th:fragment="content">
-    Добро пожаловать.<br />
-    <a href="/admin/">Администраторский интерфейс</a>
+    <h2>Самые полезные курсы</h2>
+    <div class="useful-courses">
+        <div class="java">
+            <div class="text">
+                <a href="/courses/1">Основы Java</a>
+            </div>
+        </div>
+    </div>
+
+    <h2>Свежие статьи</h2>
+    <div class="articles-list">
+        <th:block th:each="article : ${newestArticles}">
+            <div class="item">
+                <div class="date" th:text="${#temporals.format(article.updatedAt, 'dd.MM.yyyy')}"></div>
+                <a th:href="@{/articles/{articleId}(articleId=${article.id})}"><span class="title" th:text="${article.title}"></span></a>
+            </div>
+        </th:block>
+    </div>
 </div>
 </body>
 </html>

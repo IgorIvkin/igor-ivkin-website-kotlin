@@ -5,16 +5,17 @@
     window.totalFound = /*[[${totalFound}]]*/ {};
     window.totalPages = /*[[${totalPages}]]*/ {};
     window.currentPage = /*[[${currentPage}]]*/ {};
+    window.basicPaginationUrl = /*[[${basicPaginationUrl}]]*/ {};
   </script>
 </div>
 <body>
 <div th:fragment="content">
-  <h1>Статьи на сайте</h1>
+  <h1>Статьи на сайте<span th:if="${topic}"> по теме <span th:text="${topic.title}"></span></span></h1>
   <div class="articles-list">
     <th:block th:each="article : ${articles}">
       <div class="item">
         <div class="date" th:text="${#temporals.format(article.updatedAt, 'dd.MM.yyyy')}"></div>
-        <a th:href="@{/articles/{articleId}/(articleId=${article.id})}"><span class="title" th:text="${article.title}"></span></a>
+        <a th:href="@{/articles/{articleId}(articleId=${article.id})}"><span class="title" th:text="${article.title}"></span></a>
       </div>
     </th:block>
   </div>

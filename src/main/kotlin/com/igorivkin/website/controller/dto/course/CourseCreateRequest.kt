@@ -6,5 +6,6 @@ import javax.validation.constraints.Size
 data class CourseCreateRequest(
     @NotBlank
     @Size(max = 255)
-    val title: String
+    val title: String,
+    val description: String
 )

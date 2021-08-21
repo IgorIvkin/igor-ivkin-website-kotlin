@@ -28,12 +28,10 @@
                    autocomplete="off" th:value="${course.title}">
         </div>
 
-        <!--
         <div class="section">
             <label for="description">Краткое описание курса</label><br />
-            <textarea id="description" name="description" required="required"></textarea>
+            <textarea id="description" name="description" required="required" th:text="${course.description}"></textarea>
         </div>
-        -->
 
         <div class="section section-relative" id="article-initialization-block">
             <label for="articles">Статьи (начните набирать название статьи, чтобы добавить её в курс)</label><br/>
@@ -42,7 +40,7 @@
 
         <div class="section">
             <span class="button-item">
-                <button class="button button-add">Добавить</button>
+                <button class="button button-add">Изменить</button>
             </span>
         </div>
     </form>

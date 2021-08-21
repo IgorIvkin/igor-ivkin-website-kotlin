@@ -3,6 +3,7 @@ package com.igorivkin.website.controller
 import com.igorivkin.website.exception.EntityDoesNotExistException
 import com.igorivkin.website.service.ArticleService
 import com.igorivkin.website.service.MarkdownParserService
+import com.igorivkin.website.service.TopicService
 import com.igorivkin.website.view.HtmlBasicView
 import com.igorivkin.website.view.HtmlView
 import org.springframework.data.domain.PageRequest
@@ -19,6 +20,7 @@ const val ARTICLES_PER_PAGE: Int = 10
 @Controller
 class ArticleController(
     private val articleService: ArticleService,
+    private val topicService: TopicService,
     private val markdownParserService: MarkdownParserService
 ) {
 
@@ -28,6 +30,7 @@ class ArticleController(
         model.addAttribute("articles", articles.toList())
         model.addAttribute("totalFound", articles.totalElements)
         model.addAttribute("totalPages", articles.totalPages)
+        model.addAttribute("currentPage", 1)
         val view = HtmlBasicView(model)
         return renderArticlePage(
             view
@@ -52,6 +55,35 @@ class ArticleController(
         return renderArticlePage(
             view
                 .setTitle("Список статей на сайте")
+                .setMainTemplate("main-template")
+                .setJavascriptData("articles/list-page :: javascript-data")
+                .setContent("articles/list-page :: content")
+        );
+    }
+
+    @GetMapping("/articles/topics/{topicId}/page/{pageId}")
+    fun renderPageArticleByTopicPage(model: Model,
+                                     @PathVariable pageId: Int,
+                                     @PathVariable topicId: Long): String {
+        val articles = articleService.findAllByTopicId(
+            topicId = topicId,
+            pageNum = pageId - 1,
+            articlesPerPage = ARTICLES_PER_PAGE
+        )
+        if (articles.toList().size == 0) {
+            throw EntityDoesNotExistException.noArticlesFoundByCriteria()
+        }
+        val topic = topicService.findById(topicId)
+        model.addAttribute("topic", topic)
+        model.addAttribute("articles", articles.toList())
+        model.addAttribute("totalFound", articles.totalElements)
+        model.addAttribute("totalPages", articles.totalPages)
+        model.addAttribute("currentPage", pageId);
+        model.addAttribute("basicPaginationUrl", "/articles/topics/$topicId/page/")
+        val view = HtmlBasicView(model)
+        return renderArticlePage(
+            view
+                .setTitle("Список статей на сайте по теме ${topic.title}")
                 .setMainTemplate("main-template")
                 .setJavascriptData("articles/list-page :: javascript-data")
                 .setContent("articles/list-page :: content")

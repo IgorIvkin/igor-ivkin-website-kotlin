@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<body>
+<div th:fragment="content">
+    <h1>Список курсов</h1>
+    <div class="courses-list">
+        <th:block th:each="course : ${courses}">
+            <div class="item">
+                <div class="link">
+                    <a th:href="@{/courses/{courseId}(courseId=${course.id})}"><span class="title" th:text="${course.title}"></span></a>
+                </div>
+                <div class="description" th:text="${course.description}"></div>
+            </div>
+        </th:block>
+    </div>
+</div>
+</body>
+</html>

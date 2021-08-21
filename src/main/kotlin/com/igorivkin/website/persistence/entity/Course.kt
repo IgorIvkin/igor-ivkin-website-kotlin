@@ -13,6 +13,8 @@ class Course(
     @Length(min = 1, max = 255)
     var title: String?,
 
+    var description: String?,
+
     @OneToMany(
         mappedBy = "course",
         cascade = [CascadeType.ALL],

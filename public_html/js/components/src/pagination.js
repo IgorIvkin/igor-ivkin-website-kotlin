@@ -7,7 +7,7 @@ class Pagination extends React.Component {
             totalFound: props.totalFound,
             totalPages: props.totalPages,
             currentPage: props.currentPage,
-            basicUrl: props.basicUrl || "/articles/pages/"
+            basicUrl: props.basicUrl || "/articles/page/"
         }
     }
 

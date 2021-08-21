@@ -4,6 +4,7 @@ class TopicAutocomplete extends React.Component {
     constructor(props) {
         super(props);
         this.typingTimeout = null;
+        this.blurTimeout = null;
         this.autocompleteInput = React.createRef();
         this.state = {
             setTopics: this.props.setTopics || [],
@@ -62,6 +63,18 @@ class TopicAutocomplete extends React.Component {
         });
     }
 
+    doOnBlur(event) {
+        let component = this;
+        if (this.blurTimeout) {
+            clearTimeout(this.blurTimeout);
+        }
+        this.blurTimeout = setTimeout(() => {
+            component.setState({
+                foundTopics: []
+            });
+        }, 100);
+    }
+
     render() {
         console.log("Rendering TopicAutocomplete");
         return (
@@ -70,6 +83,7 @@ class TopicAutocomplete extends React.Component {
                 <input
                     ref={this.autocompleteInput}
                     onChange={(event) => this.doLookupSearch(event)}
+                    onBlur={(event) => this.doOnBlur(event)}
                     type="text"
                     id="topics"
                     autoComplete={"off"}

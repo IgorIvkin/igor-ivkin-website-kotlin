@@ -18,21 +18,21 @@ class ArticleServiceImpl(
     private val articleMapper: ArticleMapper
 ) : ArticleService {
 
-    @Transactional
+    @Transactional(readOnly = true)
     override fun findById(id: Long): ArticleGetResponse {
         val article = articleRepository.findById(id)
             .orElseThrow { EntityDoesNotExistException.ofArticleId(id) }
         return articleMapper.toDto(article)
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     override fun findByTitle(title: String): List<ArticleGetSimplifiedResponse> {
         return articleMapper.toSimplifiedDto(
             articleRepository.findAllByTitleContainingIgnoreCase(title)
         )
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     override fun findAllByTopicId(topicId: Long, pageable: Pageable): Page<ArticleGetResponse> {
         val page = articleRepository.findAllByTopicsId(topicId, pageable)
         return PageImpl(
@@ -42,7 +42,19 @@ class ArticleServiceImpl(
         )
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
+    override fun findAllByTopicId(topicId: Long, pageNum: Int, articlesPerPage: Int): Page<ArticleGetResponse> {
+        return findAllByTopicId(
+            topicId = topicId,
+            pageable = PageRequest.of(
+                pageNum,
+                articlesPerPage,
+                Sort.by("id").descending()
+            )
+        )
+    }
+
+    @Transactional(readOnly = true)
     override fun findAll(pageable: Pageable): Page<ArticleGetResponse> {
         val page = articleRepository.findAll(pageable)
         return PageImpl(
@@ -52,7 +64,7 @@ class ArticleServiceImpl(
         )
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     override fun findAll(pageNum: Int, articlesPerPage: Int): Page<ArticleGetResponse> {
         return findAll(
             PageRequest.of(

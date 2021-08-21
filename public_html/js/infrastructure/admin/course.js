@@ -24,6 +24,7 @@ function sendCourseForm(form, action) {
         requestPayload["id"] = idInput.value;
     }
     requestPayload["title"] = document.getElementById("title").value;
+    requestPayload["description"] = document.getElementById("description").value;
     let articles = [];
     let courseArticlesElement = document.querySelectorAll(".course-articles .item");
     courseArticlesElement.forEach((articleElement, index, array) => {

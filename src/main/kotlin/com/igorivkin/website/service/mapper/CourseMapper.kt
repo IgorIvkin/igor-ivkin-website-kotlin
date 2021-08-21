@@ -13,6 +13,7 @@ interface CourseMapper {
     @Mappings(
         Mapping(source = "id", target = "id"),
         Mapping(source = "title", target = "title"),
+        Mapping(source = "description", target = "description"),
         Mapping(source = "articles", target = "articles")
     )
     fun toDto(course: Course): CourseGetResponse

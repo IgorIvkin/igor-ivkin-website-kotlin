@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<body>
+<div th:fragment="content">
+    <h1 th:text="${course.title}"></h1>
+    <div class="articles-list">
+        <th:block th:each="article, iterator : ${orderedArticles}">
+            <div class="item">
+                <div class="date" th:text="${iterator.index + 1}"></div>
+                <a th:href="@{/articles/{articleId}(articleId=${article.articleId})}"><span class="title" th:text="${article.articleTitle}"></span></a>
+            </div>
+        </th:block>
+    </div>
+</div>
+</body>
+</html>

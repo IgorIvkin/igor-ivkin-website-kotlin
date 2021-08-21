@@ -8,7 +8,7 @@
   </div>
   <div class="topics">
     <div class="item" th:each="topic: ${article.topics}">
-      <a href="#" th:text="${topic.title}"></a>
+      <a th:href="@{/articles/topics/{topicId}/page/1(topicId=${topic.id})}" th:text="${topic.title}"></a>
     </div>
   </div>
   <div th:utext="${article.content}"></div>
