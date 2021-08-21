@@ -1,8 +1,10 @@
 package com.igorivkin.website.controller
 
+import com.igorivkin.website.exception.EntityDoesNotExistException
 import com.igorivkin.website.service.ArticleService
 import com.igorivkin.website.service.MarkdownParserService
 import com.igorivkin.website.view.HtmlBasicView
+import com.igorivkin.website.view.HtmlView
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
@@ -23,15 +25,37 @@ class ArticleController(
     @GetMapping("/articles")
     fun renderMainPage(model: Model): String {
         val articles = articleService.findAll(DEFAULT_PAGE, ARTICLES_PER_PAGE)
-        model.addAttribute("articles", articles)
+        model.addAttribute("articles", articles.toList())
         model.addAttribute("totalFound", articles.totalElements)
         model.addAttribute("totalPages", articles.totalPages)
         val view = HtmlBasicView(model)
-        return view
-            .setTitle("Список статей на сайте")
-            .setMainTemplate("main-template")
-            .setContent("articles/list-page :: content")
-            .render()
+        return renderArticlePage(
+            view
+                .setTitle("Список статей на сайте")
+                .setMainTemplate("main-template")
+                .setJavascriptData("articles/list-page :: javascript-data")
+                .setContent("articles/list-page :: content")
+        );
+    }
+
+    @GetMapping("/articles/page/{pageId}")
+    fun renderPagedArticlePage(model: Model, @PathVariable pageId: Int): String {
+        val articles = articleService.findAll(pageId - 1, ARTICLES_PER_PAGE)
+        if (articles.toList().size == 0) {
+            throw EntityDoesNotExistException.noArticlesFoundByCriteria()
+        }
+        model.addAttribute("articles", articles.toList())
+        model.addAttribute("totalFound", articles.totalElements)
+        model.addAttribute("totalPages", articles.totalPages)
+        model.addAttribute("currentPage", pageId);
+        val view = HtmlBasicView(model)
+        return renderArticlePage(
+            view
+                .setTitle("Список статей на сайте")
+                .setMainTemplate("main-template")
+                .setJavascriptData("articles/list-page :: javascript-data")
+                .setContent("articles/list-page :: content")
+        );
     }
 
     @GetMapping("/articles/{articleId}")
@@ -45,6 +69,12 @@ class ArticleController(
             .setTitle(article.title + " — Статья на сайте igorivkin.com")
             .setMainTemplate("main-template")
             .setContent("articles/main-page :: content")
+            .render()
+    }
+
+    private fun renderArticlePage(view: HtmlView): String {
+        return view
+            .addJs("/js/components/pagination.js")
             .render()
     }
 

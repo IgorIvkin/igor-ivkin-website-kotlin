@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<div th:fragment="javascript-data">
+  <script th:inline="javascript">
+    window.totalFound = /*[[${totalFound}]]*/ {};
+    window.totalPages = /*[[${totalPages}]]*/ {};
+    window.currentPage = /*[[${currentPage}]]*/ {};
+  </script>
+</div>
 <body>
 <div th:fragment="content">
   <h1>Статьи на сайте</h1>
@@ -10,6 +17,8 @@
         <a th:href="@{/articles/{articleId}/(articleId=${article.id})}"><span class="title" th:text="${article.title}"></span></a>
       </div>
     </th:block>
+  </div>
+  <div class="pagination-block">
   </div>
 </div>
 </body>

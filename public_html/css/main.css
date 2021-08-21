@@ -93,6 +93,15 @@ a:hover {color: #f57d00;}
     background-color:   #f5f5f5;
 }
 
+.container .content .pagination {
+    margin:             40px 0 10px 0;
+    display:            flex;
+    justify-content:    center;
+}
+.container .content .pagination .item {
+    margin: 5px 10px;
+}
+
 .footer {
     width:          80%;
     margin:         0 auto;
