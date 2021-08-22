@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<body>
+<div th:fragment="content">
+    <h1>Поиск статей на сайте</h1>
+    <div class="your-query">
+        Результаты по запросу: <b th:text="${searchQuery}"></b>
+    </div>
+    <div class="articles-list">
+        <th:block th:each="article : ${foundArticles}">
+            <div class="item">
+                <div class="date" th:text="${#temporals.format(article.updatedAt, 'dd.MM.yyyy')}"></div>
+                <a th:href="@{/articles/{articleId}(articleId=${article.id})}"><span class="title" th:text="${article.title}"></span></a>
+            </div>
+        </th:block>
+    </div>
+    <div class="pagination-block">
+    </div>
+</div>
+</body>
+</html>

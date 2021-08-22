@@ -28,6 +28,31 @@ a:hover {color: #f57d00;}
     font-size:      22px;
 }
 
+.header-container header .search {
+    display:            flex;
+    align-items:        center;
+    justify-items:      center;
+    justify-content:    center;
+    margin-left:        20%;
+}
+
+.header-container header .search input[type=text] {
+    font-family:            'Open Sans', sans, serif;
+    outline:                none;
+    font-size:              20px;
+    padding:                10px 60px 10px 20px;
+    border:                 0;
+    border-bottom:          1px solid #4e7896;
+    transition:             0.2s;
+    background:             #e3ebf1 url("/images/static/icon-search1.png") no-repeat;
+    background-position-y:  50%;
+    background-position-x:  95%;
+}
+
+.header-container header .search input[type=text]:focus {
+    background-color:       #ffffff;
+}
+
 .header-container header .menu a:link {color: #4e7896; text-decoration: none;}
 .header-container header .menu a:visited {color: #4e7896; text-decoration: none;}
 .header-container header .menu a:hover {color: #f57d00; text-decoration: underline;}

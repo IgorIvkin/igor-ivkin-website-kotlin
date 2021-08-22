@@ -11,6 +11,7 @@ import com.igorivkin.website.service.mapper.ArticleMapper
 import org.springframework.data.domain.*
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 @Service
 class ArticleServiceImpl(
@@ -75,6 +76,12 @@ class ArticleServiceImpl(
         )
     }
 
+    @Transactional(readOnly = true)
+    override fun findBySearchQuery(query: String): List<ArticleGetResponse> {
+        val results = articleRepository.findAllBySearchQuery(prepareSearchQuery(query))
+        return articleMapper.toDto(results)
+    }
+
     @Transactional
     override fun create(request: ArticleCreateRequest): IdValue<Long> {
         val articleId = articleRepository.save(articleMapper.toModel(request)).id
@@ -97,5 +104,9 @@ class ArticleServiceImpl(
         } else {
             throw IllegalStateException("Cannot update request, cannot retrieve ID")
         }
+    }
+
+    private fun prepareSearchQuery(query: String): String {
+        return query.split(" ").joinToString(separator = " & ") { it.lowercase(Locale.getDefault()) }
     }
 }

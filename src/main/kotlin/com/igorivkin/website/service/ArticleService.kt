@@ -15,6 +15,7 @@ interface ArticleService  {
     fun findAllByTopicId(topicId: Long, pageNum: Int, articlesPerPage: Int): Page<ArticleGetResponse>
     fun findAll(pageable: Pageable): Page<ArticleGetResponse>
     fun findAll(pageNum: Int, articlesPerPage: Int): Page<ArticleGetResponse>
+    fun findBySearchQuery(query: String): List<ArticleGetResponse>
 
     fun create(request: ArticleCreateRequest): IdValue<Long>
     fun update(id: Long, request: ArticleUpdateRequest): IdValue<Long>
